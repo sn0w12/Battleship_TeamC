@@ -7,6 +7,7 @@ public class Logic {
     private Board opponentBoard;
     private Fleet playerFleet;
     private Fleet opponentFleet;
+
     private boolean isGameOver;
 
     public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet) {

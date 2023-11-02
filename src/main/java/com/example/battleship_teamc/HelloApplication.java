@@ -3,6 +3,7 @@ package com.example.battleship_teamc;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -11,13 +12,25 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene firstScene = new Scene(fxmlLoader.load());
         stage.setTitle("Sänka Skepp");
-        stage.setScene(scene);
+        stage.setScene(firstScene);
         stage.show();
-    }
 
-    public static void main(String[] args) {
+        Button startClient = (Button) firstScene.lookup("#startClient");
+
+        startClient.setOnAction(event -> {
+            try {
+                FXMLLoader clientLoader = new FXMLLoader(HelloApplication.class.getResource("ClientView.fxml"));
+                Scene clientScene = new Scene(clientLoader.load());
+                stage.setScene(clientScene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+    public static void main (String[]args){
         launch();
     }
 }

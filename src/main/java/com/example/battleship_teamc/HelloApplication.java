@@ -18,6 +18,7 @@ public class HelloApplication extends Application {
         stage.show();
 
         Button startClient = (Button) firstScene.lookup("#startClient");
+        Button startServer = (Button) firstScene.lookup("#startServer");
 
         startClient.setOnAction(event -> {
             try {
@@ -29,6 +30,15 @@ public class HelloApplication extends Application {
             }
         });
 
+        startServer.setOnAction(event -> {
+            try {
+                FXMLLoader serverLoader = new FXMLLoader(HelloApplication.class.getResource("ServerView.fxml"));
+                Scene serverScene = new Scene(serverLoader.load());
+                stage.setScene(serverScene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
     public static void main (String[]args){
         launch();

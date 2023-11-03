@@ -1,12 +1,14 @@
 package com.example.battleship_teamc;
 
 import ships.*;
+import java.util.ArrayList;
 
 public class Board {
     private int[][] grid;
-
+    ArrayList<String> firedShots;
     public Board(int rows, int cols) {
         grid = new int[rows][cols];
+        firedShots = new ArrayList<>();
     }
 
     public void printBoard() {
@@ -38,15 +40,15 @@ public class Board {
         return grid;
     }
 
-    public char getCell(int row, int col) { return (char) grid[row][col]; }
+    public int getCell(int row, int col) { return grid[row][col]; }
 
     private boolean isValidPosition(int row, int col) {
         return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
     }
 
-    public boolean hasShip(int row, int col){
-        return grid[row][col] != 0;
-    }
+    public boolean hasShip(int row, int col){ return grid[row][col] != 0; }
+
+    boolean hasBeenFired(int row, int col){ return grid[row][col] < 0; }
 
     public void addShip(int row, int col, Ship ship, char orientation) {
         if (isValidPosition(row, col) && isSpaceAvailable(row, col, ship, orientation)) {
@@ -113,6 +115,21 @@ public class Board {
         }
 
         return true;
+    }
+    void shoot(int row, int col) {
+        if (isValidPosition(row, col)) {
+            String shot = convertToCoordinate(row, col);
+
+            if (!firedShots.contains(shot)) {
+                firedShots.add(shot);
+
+                int target = getCell(row, col);
+                if (target != 0)
+                    grid[row][col] = -target; // Mark the hit on the board
+            }
+        } else {
+            System.out.println("Invalid shot coordinates.");
+        }
     }
 
     String convertToCoordinate(int row, int col) {

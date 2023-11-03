@@ -128,9 +128,9 @@ public class Logic {
             if (!targetBoard.hasBeenFired(row, col)) {
                 targetBoard.shoot(row, col);
 
-                char result = targetBoard.getCell(row, col);
+                char result = (char) targetBoard.getCell(row, col);
                 if (result == 'X') {
-                    if (targetBoard.isShipSunk(1)) {
+                    if (targetBoard.isShipSunk(targetBoard.getCell(row, col))) {
                         System.out.println("Spelare " + player + " sänkte ett skepp!");
                     } else {
                         System.out.println("Spelare " + player + " träffade!");

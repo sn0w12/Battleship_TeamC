@@ -1,5 +1,7 @@
 package com.example.battleship_teamc;
+
 import java.util.ArrayList;
+import ships.*;
 
 public class Board {
     private int[][] grid;
@@ -43,7 +45,22 @@ public class Board {
         return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
     }
 
-    /*
+    public void addShip(int row, int col, Ship ship) {
+        if (isValidPosition(row, col) && isSpaceAvailable(row, col, ship)) {
+            if (ship.isHorizontal()) {
+                for (int i = 0; i < ship.getSize(); i++) {
+                    grid[row][col + i] = ship.getType();
+                }
+            } else {
+                for (int i = 0; i < ship.getSize(); i++) {
+                    grid[row + i][col] = ship.getType();
+                }
+            }
+        } else {
+            System.out.println("Invalid position or position already occupied.");
+        }
+    }
+
     boolean isSpaceAvailable(int row, int col, Ship ship) {
         int gridSize = grid.length;
         int shipSize = ship.getSize();
@@ -83,21 +100,9 @@ public class Board {
 
         return true;
     }
-    */
 
     String convertToCoordinate(int row, int col) {
         char letter = (char) ('A' + row);
         return letter + String.valueOf(col);
-    }
-
-    private boolean isShipSunk(int targetType) {
-        for (int[] row : grid) {
-            for (int cell : row) {
-                if (cell == targetType || cell == -targetType) {
-                    return false; // The ship is not completely sunk
-                }
-            }
-        }
-        return true; // The ship is completely sunk
     }
 }

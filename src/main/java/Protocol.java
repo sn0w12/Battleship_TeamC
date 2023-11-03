@@ -1,5 +1,6 @@
 
 public class Protocol {
+
     public static final String CLIENT_SHOT_FIRST = "i";
     public static final String HIT = "h";
     public static final String MISS = "m";

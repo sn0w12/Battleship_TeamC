@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.battleship_teamc.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane prefHeight="647.0" prefWidth="653.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship_teamc.HelloController">
+   <children>
+      <ImageView fitHeight="684.0" fitWidth="659.0" layoutX="-3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../../Images/skeppbild.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="startServer" layoutX="417.0" layoutY="74.0" prefHeight="31.0" prefWidth="172.0" text="STARTA SERVER" AnchorPane.bottomAnchor="554.0" AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="64.0" AnchorPane.topAnchor="74.0">
+         <font>
+            <Font name="Britannic Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="startClient" layoutX="69.0" layoutY="74.0" prefHeight="31.0" prefWidth="172.0" text="STARTA KLIENT" AnchorPane.bottomAnchor="554.0" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="417.0" AnchorPane.topAnchor="74.0">
+         <font>
+            <Font name="Britannic Bold" size="15.0" />
+         </font>
+      </Button>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>

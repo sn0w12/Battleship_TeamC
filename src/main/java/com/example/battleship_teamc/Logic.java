@@ -110,7 +110,6 @@ public class Logic {
             }
         }
     }
-
     void randomShot() {
         Random random = new Random();
         int row, col;

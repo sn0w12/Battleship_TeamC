@@ -1,5 +1,7 @@
+
 package com.example.battleship_teamc;
 
+import javafx.scene.control.Slider;
 import java.util.Random;
 
 public class Logic {
@@ -7,15 +9,17 @@ public class Logic {
     private Board opponentBoard;
     private Fleet playerFleet;
     private Fleet opponentFleet;
+    private Slider shotDelaySlider;
 
     private boolean isGameOver;
 
-    public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet) {
+    public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet, Slider shotDelaySlider) {
         // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
         this.playerBoard = playerBoard;
         this.opponentBoard = opponentBoard;
         this.playerFleet = playerFleet;
         this.opponentFleet = opponentFleet;
+        this.shotDelaySlider = shotDelaySlider;
         this.isGameOver = false;
 
         // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
@@ -116,8 +120,9 @@ public class Logic {
             col = random.nextInt(opponentBoard.getCols());
         } while (opponentBoard.hasBeenFired(row, col));
 
-        // Skjutmetoden med en slumpmässig fördröjning inte den som ska vara till slider. Bara ett exempel
-        int shotDelay = random.nextInt(5000); // Slumpmässig fördröjning i millisekunder (0-5 sekunder)
+        int selectedDelaySeconds = (int) shotDelaySlider.getValue(); // Hämta värdet från slidern
+        int shotDelay = selectedDelaySeconds * 1000; // Konvertera till millisekunder
+
         try {
             Thread.sleep(shotDelay); // Vänta i shotDelay millisekunder innan skottet utförs
         } catch (InterruptedException e) {

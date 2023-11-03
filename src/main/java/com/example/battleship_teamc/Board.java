@@ -27,24 +27,6 @@ public class Board {
         }
     }
 
-    /*
-    public void addShip(int row, int col, Ship ship) {
-        if (isValidPosition(row, col) && isSpaceAvailable(row, col, ship)) {
-            if (ship.isHorizontal()) {
-                for (int i = 0; i < ship.getSize(); i++) {
-                    grid[row][col + i] = ship.getType();
-                }
-            } else {
-                for (int i = 0; i < ship.getSize(); i++) {
-                    grid[row + i][col] = ship.getType();
-                }
-            }
-        } else {
-            System.out.println("Invalid position or position already occupied.");
-        }
-    }
-    */
-
     public int getRows() {
         return grid.length;
     }
@@ -102,29 +84,6 @@ public class Board {
         return true;
     }
     */
-
-    public void shoot(int row, int col) {
-        if (isValidPosition(row, col)) {
-            String shot = convertToCoordinate(row, col);
-
-            if (!firedShots.contains(shot)) {
-                firedShots.add(shot);
-
-                int target = grid[row][col];
-                if (target != 0) {
-                    System.out.println("Hit!");
-                    grid[row][col] = -target; // Mark the hit on the board
-                    if (isShipSunk(target)) {
-                        System.out.println("You sank a ship!");
-                    }
-                } else {
-                    System.out.println("Miss!");
-                }
-            }
-        } else {
-            System.out.println("Invalid shot coordinates.");
-        }
-    }
 
     String convertToCoordinate(int row, int col) {
         char letter = (char) ('A' + row);

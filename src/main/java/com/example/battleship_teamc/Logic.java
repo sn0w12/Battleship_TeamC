@@ -1,13 +1,13 @@
 package com.example.battleship_teamc;
 
 import java.util.Random;
+import ships.*;
 
 public class Logic {
-    private Board playerBoard;
-    private Board opponentBoard;
+    private Board playerBoard = new Board(10, 10);
+    private Board opponentBoard = new Board(10, 10);
     private Fleet playerFleet;
     private Fleet opponentFleet;
-
     private boolean isGameOver;
 
     public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet) {
@@ -43,8 +43,8 @@ public class Logic {
                 }
 
                 // Kontrollera om placeringen är giltig
-                if (isValidPlacement(board, ship.getSize(), row, col, orientation)) {
-                    placeShipOnBoard(board, ship.getSize(), row, col, orientation);
+                if (board.isSpaceAvailable(row, col, ship, orientation)) {
+                    board.addShip(row, col, ship, orientation);
                     ship.setPlaced(true); // Markera skeppet som placerat
                     break;
                 }
@@ -55,6 +55,7 @@ public class Logic {
         board.printBoard();
     }
 
+    /*
     private boolean isValidPlacement(Board board, int size, int row, int col, char orientation) {
         if (orientation == 'H') {
             if (col + size > board.getCols()) {
@@ -94,17 +95,10 @@ public class Logic {
 
         return true; // Placeringen är giltig
     }
+    */
 
-    private void placeShipOnBoard(Board board, int size, int row, int col, char orientation) {
-        if (orientation == 'H') {
-            for (int i = 0; i < size; i++) {
-                board.placeShip(row, col + i);
-            }
-        } else if (orientation == 'V') {
-            for (int i = 0; i < size; i++) {
-                board.placeShip(row + i, col);
-            }
-        }
+    private void placeShipOnBoard(Board board, int size, int row, int col, char orientation, Ship ship) {
+        board.addShip(row, col, ship, orientation);
     }
 
     void randomShot() {

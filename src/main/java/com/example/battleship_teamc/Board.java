@@ -1,15 +1,12 @@
 package com.example.battleship_teamc;
 
-import java.util.ArrayList;
 import ships.*;
 
 public class Board {
     private int[][] grid;
-    ArrayList<String> firedShots;
 
     public Board(int rows, int cols) {
         grid = new int[rows][cols];
-        firedShots = new ArrayList<>();
     }
 
     public void printBoard() {
@@ -41,13 +38,19 @@ public class Board {
         return grid;
     }
 
+    public char getCell(int row, int col) { return (char) grid[row][col]; }
+
     private boolean isValidPosition(int row, int col) {
         return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
     }
 
-    public void addShip(int row, int col, Ship ship) {
-        if (isValidPosition(row, col) && isSpaceAvailable(row, col, ship)) {
-            if (ship.isHorizontal()) {
+    public boolean hasShip(int row, int col){
+        return grid[row][col] != 0;
+    }
+
+    public void addShip(int row, int col, Ship ship, char orientation) {
+        if (isValidPosition(row, col) && isSpaceAvailable(row, col, ship, orientation)) {
+            if (orientation == 'H') {
                 for (int i = 0; i < ship.getSize(); i++) {
                     grid[row][col + i] = ship.getType();
                 }
@@ -61,7 +64,18 @@ public class Board {
         }
     }
 
-    boolean isSpaceAvailable(int row, int col, Ship ship) {
+    boolean allShipsSunk(){
+        for (int[] row : grid) {
+            for (int cell : row) {
+                if (cell > 0) {
+                    return false; // There is still a ship remaining
+                }
+            }
+        }
+        return true; // All ships are sunk
+    }
+
+    boolean isSpaceAvailable(int row, int col, Ship ship, char orientation) {
         int gridSize = grid.length;
         int shipSize = ship.getSize();
 
@@ -78,7 +92,7 @@ public class Board {
             }
         }
 
-        if (ship.isHorizontal()) {
+        if (orientation == 'H') {
             if (col + shipSize > grid[0].length) {
                 return false; // The ship doesn't fit horizontally
             }
@@ -104,5 +118,16 @@ public class Board {
     String convertToCoordinate(int row, int col) {
         char letter = (char) ('A' + row);
         return letter + String.valueOf(col);
+    }
+
+    boolean isShipSunk(int targetType) {
+        for (int[] row : grid) {
+            for (int cell : row) {
+                if (cell == targetType || cell == -targetType) {
+                    return false; // The ship is not completely sunk
+                }
+            }
+        }
+        return true; // The ship is completely sunk
     }
 }

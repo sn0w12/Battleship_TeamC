@@ -1,3 +1,4 @@
+
 package ships;
 
 public abstract class Ship {
@@ -7,6 +8,7 @@ public abstract class Ship {
     private String name;
     private int size;
     private boolean isDestroyed;
+    private boolean isPlaced; // Lägg till en flagga för att markera om skeppet är placerat
 
     public Ship() {
     }
@@ -15,6 +17,7 @@ public abstract class Ship {
         this.name = name;
         this.size = size;
         this.isDestroyed = isDestroyed;
+        this.isPlaced = false; // Skeppet anses inte vara placerat när det skapas
     }
 
     public String getName() {
@@ -40,6 +43,14 @@ public abstract class Ship {
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
     }
+    public void setPlaced(boolean placed) {
+        isPlaced = placed;
+    }
+
+    // Metod för att kontrollera om skeppet är placerat
+    public boolean isPlaced() {
+        return isPlaced;
+    }
 
     @Override
     public String toString() {
@@ -47,6 +58,7 @@ public abstract class Ship {
                 "name='" + name + '\'' +
                 ", size=" + size +
                 ", Is Destroyed=" + isDestroyed +
+                ", isPlaced=" + isPlaced +
                 '}';
     }
 }

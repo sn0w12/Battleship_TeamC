@@ -3,24 +3,20 @@ package com.example.battleship_teamc;
 
 import javafx.scene.control.Slider;
 import java.util.Random;
+import ships.Fleet;
+import ships.Ship;
 
 public class Logic {
-    private Board playerBoard;
-    private Board opponentBoard;
-    private Fleet playerFleet;
-    private Fleet opponentFleet;
-    private Slider shotDelaySlider;
-
-    private boolean isGameOver;
+    private final Board playerBoard;
+    private final Board opponentBoard;
+    private final Slider shotDelaySlider;
 
     public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet, Slider shotDelaySlider) {
         // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
         this.playerBoard = playerBoard;
         this.opponentBoard = opponentBoard;
-        this.playerFleet = playerFleet;
-        this.opponentFleet = opponentFleet;
         this.shotDelaySlider = shotDelaySlider;
-        this.isGameOver = false;
+        boolean isGameOver = false;
 
         // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
         placeShips(playerBoard, playerFleet);
@@ -81,19 +77,6 @@ public class Logic {
             if (row + size > board.getRows()) {
                 return false; // Placeringen går utanför spelplanen vertikalt
             }
-
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= size; j++) {
-                    int newRow = row + i;
-                    int newCol = col + j;
-
-                    if (newRow >= 0 && newRow < board.getRows() && newCol >= 0 && newCol < board.getCols()) {
-                        if (board.hasShip(newRow, newCol)) {
-                            return false; // En annan båt finns redan i närheten
-                        }
-                    }
-                }
-            }
         }
 
         return true; // Placeringen är giltig
@@ -130,6 +113,7 @@ public class Logic {
         shoot(1, row, col);
     }
 
+
     // Metoden för att utföra ett skott
     private void shoot(int player, int row, int col) {
         Board targetBoard = (player == 1) ? opponentBoard : playerBoard;
@@ -153,8 +137,8 @@ public class Logic {
     }
 
     public boolean isGameOver() {
-        boolean player1Lost = opponentBoard.allShipsSunk();
-        boolean player2Lost = playerBoard.allShipsSunk();
+        boolean player1Lost = opponentBoard.isShipSunk(1);
+        boolean player2Lost = playerBoard.isShipSunk(2);
 
         if (player1Lost || player2Lost) {
             if (player1Lost && player2Lost) {

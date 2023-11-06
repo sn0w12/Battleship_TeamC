@@ -1,3 +1,4 @@
+
 package com.example.battleship_teamc;
 import java.util.ArrayList;
 
@@ -82,15 +83,15 @@ public class Board {
         }
 
         return true;
-    }
-    */
+    } */
+
 
     String convertToCoordinate(int row, int col) {
         char letter = (char) ('A' + row);
         return letter + String.valueOf(col);
     }
 
-    private boolean isShipSunk(int targetType) {
+    boolean isShipSunk(int targetType) {
         for (int[] row : grid) {
             for (int cell : row) {
                 if (cell == targetType || cell == -targetType) {
@@ -99,5 +100,23 @@ public class Board {
             }
         }
         return true; // The ship is completely sunk
+    }
+
+    public boolean hasShip(int newRow, int newCol) {
+        return false;
+    }
+
+    public void placeShip(int row, int i) {
+    }
+
+    public boolean hasBeenFired(int row, int col) {
+        return false;
+    }
+
+    public void shoot(int row, int col) {
+    }
+
+    public char getCell(int row, int col) {
+        return 0;
     }
 }

@@ -55,7 +55,6 @@ public class Logic {
         board.printBoard();
     }
 
-    /*
     private boolean isValidPlacement(Board board, int size, int row, int col, char orientation) {
         if (orientation == 'H') {
             if (col + size > board.getCols()) {
@@ -82,7 +81,6 @@ public class Logic {
 
         return true; // Placeringen är giltig
     }
-    */
 
     private void placeShipOnBoard(Board board, int size, int row, int col, char orientation, Ship ship) {
         board.addShip(row, col, ship, orientation);

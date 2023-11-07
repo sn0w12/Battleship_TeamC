@@ -4,8 +4,8 @@ public class Cruiser extends Ship{
     public Cruiser() {
     }
 
-    public Cruiser(String name, int size, boolean isDestroyed) {
-        super(name, size, isDestroyed);
+    public Cruiser(String name, int size, boolean isDestroyed, int type) {
+        super(name, size, isDestroyed, type);
     }
 
     @Override
@@ -42,4 +42,7 @@ public class Cruiser extends Ship{
     public String toString() {
         return super.toString();
     }
+
+    @Override
+    public int getType() { return super.getType(); }
 }

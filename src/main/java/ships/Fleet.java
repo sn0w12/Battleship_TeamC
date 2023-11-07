@@ -10,19 +10,19 @@ public class Fleet {
     public Fleet() {
         this.playerFleet = new ArrayList<Ship>();
 
-        AircraftCarrier aircraftCarrier = new AircraftCarrier("AircraftCarrier", 5,false);
+        AircraftCarrier aircraftCarrier = new AircraftCarrier("AircraftCarrier", 5,false, 5);
 
-        Battleship battleship1 = new Battleship("Battleship1", 4, false );
-        Battleship battleship2 = new Battleship("Battleship2", 4, false);
+        Battleship battleship1 = new Battleship("Battleship1", 4, false, 4);
+        Battleship battleship2 = new Battleship("Battleship2", 4, false, 4);
 
-        Cruiser cruiser1 = new Cruiser("Cruiser1", 3, false);
-        Cruiser cruiser2 = new Cruiser("Cruiser2", 3, false);
-        Cruiser cruiser3 = new Cruiser("Cruiser3", 3, false);
+        Cruiser cruiser1 = new Cruiser("Cruiser1", 3, false, 3);
+        Cruiser cruiser2 = new Cruiser("Cruiser2", 3, false, 3);
+        Cruiser cruiser3 = new Cruiser("Cruiser3", 3, false, 3);
 
-        Submarine submarine1 = new Submarine("Submarine1", 2, false);
-        Submarine submarine2 = new Submarine("Submarine2", 2, false);
-        Submarine submarine3 = new Submarine("Submarine3", 2, false);
-        Submarine submarine4 = new Submarine("Submarine4", 2, false);
+        Submarine submarine1 = new Submarine("Submarine1", 2, false, 2);
+        Submarine submarine2 = new Submarine("Submarine2", 2, false, 2);
+        Submarine submarine3 = new Submarine("Submarine3", 2, false, 2);
+        Submarine submarine4 = new Submarine("Submarine4", 2, false, 2);
 
        this.playerFleet.add(aircraftCarrier);
 

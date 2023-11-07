@@ -1,5 +1,5 @@
 
-package ships;
+package com.example.battleship_teamc;
 
 public abstract class Ship {
 
@@ -47,10 +47,6 @@ public abstract class Ship {
         isPlaced = placed;
     }
 
-    // Metod för att kontrollera om skeppet är placerat
-    public boolean isPlaced() {
-        return isPlaced;
-    }
 
     @Override
     public String toString() {

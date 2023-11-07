@@ -3,8 +3,6 @@ package com.example.battleship_teamc;
 
 import javafx.scene.control.Slider;
 import java.util.Random;
-import ships.Fleet;
-import ships.Ship;
 
 public class Logic {
     private final Board playerBoard;

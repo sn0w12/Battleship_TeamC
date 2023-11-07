@@ -1,10 +1,11 @@
-package ships;
+package com.example.battleship_teamc;
 
-public class Battleship extends Ship{
-    public Battleship() {
+public class AircraftCarrier extends Ship {
+
+    public AircraftCarrier() {
     }
 
-    public Battleship(String name, int size, boolean isDestroyed) {
+    public AircraftCarrier(String name, int size, boolean isDestroyed) {
         super(name, size, isDestroyed);
     }
 

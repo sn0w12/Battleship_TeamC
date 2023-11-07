@@ -1,3 +1,5 @@
+package com.example.battleship_teamc;
+
 import java.io.*;
 import java.net.*;
 
@@ -17,7 +19,7 @@ public class Client {
                 out.println(shot); // Skicka skottet till servern
 
                 response = in.readLine(); // Ta emot svar från servern
-                System.out.println("Server: " + response);
+                System.out.println("com.example.battleship_teamc.Server: " + response);
 
                 if (response.equals(Protocol.GAME_OVER)) {
                     System.out.println("Du förlorade. Spelet är över.");

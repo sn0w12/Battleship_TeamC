@@ -43,8 +43,8 @@ public class Logic {
                 }
 
                 // Kontrollera om placeringen är giltig
-                if (isValidPlacement(board, ship.getSize(), row, col, orientation)) {
-                    placeShipOnBoard(board, ship.getSize(), row, col, orientation);
+                if (board.isSpaceAvailable(row, col, ship, orientation)) {
+                    board.addShip(row, col, ship, orientation);
                     ship.setPlaced(true); // Markera skeppet som placerat
                     break;
                 }
@@ -82,16 +82,8 @@ public class Logic {
         return true; // Placeringen är giltig
     }
 
-    private void placeShipOnBoard(Board board, int size, int row, int col, char orientation) {
-        if (orientation == 'H') {
-            for (int i = 0; i < size; i++) {
-                board.placeShip(row, col + i);
-            }
-        } else if (orientation == 'V') {
-            for (int i = 0; i < size; i++) {
-                board.placeShip(row + i, col);
-            }
-        }
+    private void placeShipOnBoard(Board board, int size, int row, int col, char orientation, Ship ship) {
+        board.addShip(row, col, ship, orientation);
     }
     void randomShot() {
         Random random = new Random();
@@ -122,9 +114,9 @@ public class Logic {
             if (!targetBoard.hasBeenFired(row, col)) {
                 targetBoard.shoot(row, col);
 
-                char result = targetBoard.getCell(row, col);
+                char result = (char) targetBoard.getCell(row, col);
                 if (result == 'X') {
-                    if (targetBoard.isShipSunk(1)) {
+                    if (targetBoard.isShipSunk(targetBoard.getCell(row, col))) {
                         System.out.println("Spelare " + player + " sänkte ett skepp!");
                     } else {
                         System.out.println("Spelare " + player + " träffade!");

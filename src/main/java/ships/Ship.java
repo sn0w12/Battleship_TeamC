@@ -2,22 +2,20 @@
 package ships;
 
 public abstract class Ship {
-
-
-
     private String name;
     private int size;
     private boolean isDestroyed;
     private boolean isPlaced; // Lägg till en flagga för att markera om skeppet är placerat
-
+    private int type;
     public Ship() {
     }
 
-    public Ship(String name, int size, boolean isDestroyed) {
+    public Ship(String name, int size, boolean isDestroyed, int type) {
         this.name = name;
         this.size = size;
         this.isDestroyed = isDestroyed;
         this.isPlaced = false; // Skeppet anses inte vara placerat när det skapas
+        this.type = type;
     }
 
     public String getName() {
@@ -32,6 +30,10 @@ public abstract class Ship {
         return size;
     }
 
+    public int getType() {
+        return type;
+    }
+
     public void setSize(int size) {
         this.size = size;
     }
@@ -43,6 +45,7 @@ public abstract class Ship {
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
     }
+
     public void setPlaced(boolean placed) {
         isPlaced = placed;
     }

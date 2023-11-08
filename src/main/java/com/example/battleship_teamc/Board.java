@@ -1,11 +1,12 @@
 
 package com.example.battleship_teamc;
+
+import ships.*;
 import java.util.ArrayList;
 
 public class Board {
     private int[][] grid;
     ArrayList<String> firedShots;
-
     public Board(int rows, int cols) {
         grid = new int[rows][cols];
         firedShots = new ArrayList<>();
@@ -40,12 +41,44 @@ public class Board {
         return grid;
     }
 
+    public int getCell(int row, int col) { return grid[row][col]; }
+
     private boolean isValidPosition(int row, int col) {
         return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
     }
 
-    /*
-    boolean isSpaceAvailable(int row, int col, Ship ship) {
+    public boolean hasShip(int row, int col){ return grid[row][col] != 0; }
+
+    boolean hasBeenFired(int row, int col){ return grid[row][col] < 0; }
+
+    public void addShip(int row, int col, Ship ship, char orientation) {
+        if (isValidPosition(row, col) && isSpaceAvailable(row, col, ship, orientation)) {
+            if (orientation == 'H') {
+                for (int i = 0; i < ship.getSize(); i++) {
+                    grid[row][col + i] = ship.getType();
+                }
+            } else {
+                for (int i = 0; i < ship.getSize(); i++) {
+                    grid[row + i][col] = ship.getType();
+                }
+            }
+        } else {
+            System.out.println("Invalid position or position already occupied.");
+        }
+    }
+
+    boolean allShipsSunk(){
+        for (int[] row : grid) {
+            for (int cell : row) {
+                if (cell > 0) {
+                    return false; // There is still a ship remaining
+                }
+            }
+        }
+        return true; // All ships are sunk
+    }
+
+    boolean isSpaceAvailable(int row, int col, Ship ship, char orientation) {
         int gridSize = grid.length;
         int shipSize = ship.getSize();
 
@@ -62,7 +95,7 @@ public class Board {
             }
         }
 
-        if (ship.isHorizontal()) {
+        if (orientation == 'H') {
             if (col + shipSize > grid[0].length) {
                 return false; // The ship doesn't fit horizontally
             }
@@ -83,8 +116,22 @@ public class Board {
         }
 
         return true;
-    } */
+    }
+    void shoot(int row, int col) {
+        if (isValidPosition(row, col)) {
+            String shot = convertToCoordinate(row, col);
 
+            if (!firedShots.contains(shot)) {
+                firedShots.add(shot);
+
+                int target = getCell(row, col);
+                if (target != 0)
+                    grid[row][col] = -target; // Mark the hit on the board
+            }
+        } else {
+            System.out.println("Invalid shot coordinates.");
+        }
+    }
 
     String convertToCoordinate(int row, int col) {
         char letter = (char) ('A' + row);
@@ -100,23 +147,5 @@ public class Board {
             }
         }
         return true; // The ship is completely sunk
-    }
-
-    public boolean hasShip(int newRow, int newCol) {
-        return false;
-    }
-
-    public void placeShip(int row, int i) {
-    }
-
-    public boolean hasBeenFired(int row, int col) {
-        return false;
-    }
-
-    public void shoot(int row, int col) {
-    }
-
-    public char getCell(int row, int col) {
-        return 0;
     }
 }

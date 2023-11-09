@@ -5,12 +5,10 @@ import java.util.ArrayList;
 
 public class Board {
     private char[][] grid; // Använd char för att representera spelplanen
-    private ArrayList<String> firedShots;
 
     public Board(int rows, int cols) {
         grid = new char[rows][cols];
         initializeBoard();
-        firedShots = new ArrayList<>();
     }
 
     public Board() {
@@ -19,7 +17,6 @@ public class Board {
         int defaultCols = 10; // Ange önskat antal kolumner
         grid = new char[defaultRows][defaultCols];
         initializeBoard();
-        firedShots = new ArrayList<>();
     }
 
     private void initializeBoard() {
@@ -105,5 +102,4 @@ public class Board {
         }
         return true; // All ships have been sunk
     }
-
 }

@@ -30,8 +30,10 @@ public class Client {
             // Spellogik för klienten
             while (!gameLogic.isGameFinished()) {
                 // Läs skottresultat från servern
-                String serverShotResult = serverInput.nextLine();
-                System.out.println("Serverns skottresultat: " + serverShotResult);
+                if (serverInput.hasNextLine()) {
+                    String serverShotResult = serverInput.nextLine();
+                    System.out.println("Serverns skottresultat: " + serverShotResult);
+                }
 
 
                 // Här skulle du använda spelets logik för att hantera serverns skott och uppdatera gameLogic

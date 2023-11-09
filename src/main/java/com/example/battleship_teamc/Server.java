@@ -1,9 +1,9 @@
 package com.example.battleship_teamc;
 
-
-
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 
 
@@ -29,7 +29,6 @@ public class Server {
             Fleet opponentFleet = new Fleet(); // Skapa en flotta för motståndaren
 
             Logic gameLogic = new Logic(playerBoard, opponentBoard, playerFleet, opponentFleet);
-
 
             // Spellogik för servern
             while (gameLogic.isGameFinished()) {

@@ -22,10 +22,7 @@ public class Client {
             Fleet playerFleet = new Fleet(); // Skapa en flotta för spelaren
             Fleet opponentFleet = new Fleet(); // Skapa en flotta för motståndaren
 
-
-
             Logic gameLogic = new Logic(playerBoard, opponentBoard, playerFleet, opponentFleet);
-
 
             // Spellogik för klienten
             while (gameLogic.isGameFinished()) {

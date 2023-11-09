@@ -4,12 +4,9 @@ package com.example.battleship_teamc;
 import ships.*;
 import java.util.Random;
 
-
 public class Logic {
-
     private final Board playerBoard;
     private final Board opponentBoard;
-
 
     public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet) {
         // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
@@ -77,8 +74,6 @@ public class Logic {
         return isValid;
     }
 
-
-
     /*private boolean isValidPlacement(Board board, int size, int row, int col, char orientation) {
         if (orientation == 'H') {
             if (col + size > board.getCols()) {
@@ -117,16 +112,12 @@ public class Logic {
         }
     }
 
-
-
     // Metod för att kontrollera om ett skott är en träff
     boolean isHit(Board board, int row, int col) {
-        if (board.getCell(row, col) == 'S') {
-            return true; // Träff
-        } else {
-            return false; // Miss
-        }
+        // Miss
+        return board.getCell(row, col) == 'S'; // Träff
     }
+
     // Metod för att utföra ett skott
     private void shoot(int player, int row, int col) {
         Board targetBoard = (player == 1) ? opponentBoard : playerBoard;
@@ -205,12 +196,10 @@ public class Logic {
         return areShipsLeft(playerBoard) && areShipsLeft(opponentBoard);
     }
 
-
     public String getCurrentPlayer() {
 
         return null;
     }
-
 
     public Object getCurrentResult() {
         return null;

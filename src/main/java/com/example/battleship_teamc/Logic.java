@@ -13,7 +13,6 @@ public class Logic {
         this.playerBoard = playerBoard;
         this.opponentBoard = opponentBoard;
 
-
         // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
         placeShips(playerBoard, playerFleet);
         placeShips(opponentBoard, opponentFleet);

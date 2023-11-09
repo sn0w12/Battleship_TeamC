@@ -28,7 +28,7 @@ public class Client {
 
 
             // Spellogik för klienten
-            while (!gameLogic.isGameFinished()) {
+            while (gameLogic.isGameFinished()) {
                 // Läs skottresultat från servern
                 if (serverInput.hasNextLine()) {
                     String serverShotResult = serverInput.nextLine();
@@ -47,7 +47,7 @@ public class Client {
 
             }
 
-
+            System.out.println("Game is over");
 
             // Stäng anslutningen
             socket.close();

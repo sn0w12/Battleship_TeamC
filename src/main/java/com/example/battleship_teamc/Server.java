@@ -32,7 +32,7 @@ public class Server {
 
 
             // Spellogik för servern
-            while (!gameLogic.isGameFinished()) {
+            while (gameLogic.isGameFinished()) {
                 // Serverns tur att skjuta
                 int serverPlayer = 1; // Ange serverns spelar-ID (1 i det här fallet)
                 String serverShotResult = gameLogic.randomShotAndShoot(serverPlayer); // Slumpmässigt skott och utför det
@@ -46,6 +46,8 @@ public class Server {
                 // Här skulle du använda spelets logik för att hantera skottet och uppdatera gameLogic
 
             }
+
+            System.out.println("Game is over");
 
             // Stäng anslutningen
             clientSocket.close();

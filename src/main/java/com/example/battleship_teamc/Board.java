@@ -1,10 +1,7 @@
-
 package com.example.battleship_teamc;
 
-import java.util.ArrayList;
-
 public class Board {
-    private char[][] grid; // Använd char för att representera spelplanen
+    private final char[][] grid; // Använd char för att representera spelplanen
 
     public Board(int rows, int cols) {
         grid = new char[rows][cols];
@@ -26,7 +23,6 @@ public class Board {
             }
         }
     }
-
 
     public void printBoard() {
         // Print the column headers

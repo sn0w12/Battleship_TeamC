@@ -1,4 +1,6 @@
-package ships;
+package com.example.battleship_teamc;
+
+import ships.*;
 
 import java.util.ArrayList;
 import java.util.List;

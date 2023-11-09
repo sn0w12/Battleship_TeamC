@@ -1,42 +1,53 @@
 package com.example.battleship_teamc;
 
+
 import java.io.*;
 import java.net.*;
-
+import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
         try {
             Socket socket = new Socket("localhost", 12345); // Anslut till servern
+
+            // Skapa en Scanner för att läsa från servern
+            Scanner serverInput = new Scanner(socket.getInputStream());
+
+            // Skapa en PrintWriter för att skicka till servern
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
 
-            // Connection established
-            System.out.println("Connected to server.");
+            // Skapa och initiera spelplaner, flottor
+            Board playerBoard = new Board(); // Skapa en spelplan för spelaren
+            Board opponentBoard = new Board(); // Skapa en spelplan för motståndaren
+            Fleet playerFleet = new Fleet(); // Skapa en flotta för spelaren
+            Fleet opponentFleet = new Fleet(); // Skapa en flotta för motståndaren
 
-            // Prompt user for the first shot or command
-            System.out.print("Press enter to start.");
-            consoleInput.readLine(); // Wait for user input
 
-            String response;
-            String shot = Protocol.CLIENT_SHOT_FIRST; // Skjut första skottet
 
-            while (true) {
-                out.println(shot); // Skicka skottet till servern
+            Logic gameLogic = new Logic(playerBoard, opponentBoard, playerFleet, opponentFleet);
 
-                response = in.readLine(); // Ta emot svar från servern
-                System.out.println("com.example.battleship_teamc.Server: " + response);
 
-                if (response.equals(Protocol.GAME_OVER)) {
-                    System.out.println("Du förlorade. Spelet är över.");
-                    break;
-                } else if (response.startsWith(Protocol.SUNK)) {
+            // Spellogik för klienten
+            while (!gameLogic.isGameFinished()) {
+                // Läs skottresultat från servern
+                String serverShotResult = serverInput.nextLine();
+                System.out.println("Serverns skottresultat: " + serverShotResult);
 
-                } else {
-                }
+
+                // Här skulle du använda spelets logik för att hantera serverns skott och uppdatera gameLogic
+
+                // Klientens tur att skjuta
+
+                int clientPlayer = 2; // Ange klientens spelar-ID (2 i det här fallet)
+                String clientShot = gameLogic.randomShotAndShoot(clientPlayer); // Slumpmässigt skott och utför det
+                System.out.println("Klienten skjuter: " + clientShot);
+                out.println(clientShot); // Skicka skottet till servern
+
             }
 
+
+
+            // Stäng anslutningen
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

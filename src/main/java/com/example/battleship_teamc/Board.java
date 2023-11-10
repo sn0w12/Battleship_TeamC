@@ -87,8 +87,8 @@ public class Board {
     public boolean hasShip(int newRow, int newCol) {
         return grid[newRow][newCol] == 'S';
     }
-
-    public void shoot(int row, int col) {
+// Lagt till bool om det var hit eller miss -Briana
+    public boolean shoot(int row, int col) {
         if (grid[row][col] == 'S') {
             grid[row][col] = 'X'; // 'X' representerar träff på ett skepp
         } else {

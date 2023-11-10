@@ -91,8 +91,10 @@ public class Board {
     public boolean shoot(int row, int col) {
         if (grid[row][col] == 'S') {
             grid[row][col] = 'X'; // 'X' representerar träff på ett skepp
+            return true;
         } else {
             grid[row][col] = 'O'; // 'O' representerar miss
+            return false;
         }
     }
 

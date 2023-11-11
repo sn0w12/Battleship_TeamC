@@ -1,6 +1,5 @@
 package com.example.battleship_teamc;
 
-
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;

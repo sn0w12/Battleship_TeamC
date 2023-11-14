@@ -5,7 +5,7 @@
 
 <!-- Lägg in i scenebuilder hur fönstret ska se ut när Klienten väljs att köras-->
 
-<AnchorPane prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship_teamc.ClientController">
+<AnchorPane prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship_teamc.GameController">
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
        <image>

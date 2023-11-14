@@ -22,7 +22,7 @@ public class HelloApplication extends Application {
 
         startClient.setOnAction(event -> {
             try {
-                FXMLLoader clientLoader = new FXMLLoader(HelloApplication.class.getResource("ClientView.fxml"));
+                FXMLLoader clientLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
                 Scene clientScene = new Scene(clientLoader.load());
                 stage.setScene(clientScene);
             } catch (IOException e) {
@@ -32,7 +32,7 @@ public class HelloApplication extends Application {
 
         startServer.setOnAction(event -> {
             try {
-                FXMLLoader serverLoader = new FXMLLoader(HelloApplication.class.getResource("ServerView.fxml"));
+                FXMLLoader serverLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
                 Scene serverScene = new Scene(serverLoader.load());
                 stage.setScene(serverScene);
             } catch (IOException e) {

@@ -1,5 +1,7 @@
 package com.example.battleship_teamc;
 
+import java.util.Arrays;
+
 public class Board {
     private final char[][] grid; // Använd char för att representera spelplanen
 
@@ -21,6 +23,12 @@ public class Board {
             for (int j = 0; j < grid[0].length; j++) {
                 grid[i][j] = '.'; // 'O' for empty cells
             }
+        }
+    }
+
+    public void clearBoard() {
+        for (int i = 0; i < grid.length; i++) {
+            Arrays.fill(grid[i], '.'); // Assuming 'O' is the character for an empty cell
         }
     }
 

@@ -14,10 +14,9 @@ public class Logic {
 
         // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
         placeShips(playerBoard, playerFleet);
-        placeShips(opponentBoard, opponentFleet);
     }
 
-    private void placeShips(Board board, Fleet fleet) {
+    void placeShips(Board board, Fleet fleet) {
         Random random = new Random();
         int maxAttempts = 100; // Begränsa antalet försök för att undvika oändliga loopar
 
@@ -55,7 +54,6 @@ public class Logic {
                 attempts++;
             }
         }
-
         // Skriv ut spelplanen efter att skeppen är placerade
         board.printBoard();
     }

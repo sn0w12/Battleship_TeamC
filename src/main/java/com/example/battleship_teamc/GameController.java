@@ -16,10 +16,13 @@ public class GameController {
     private GridPane ClientGrid;
 
     private static final int GRID_SIZE = 10;
-    private int maxAttempts = 100;
+    private int maxAttempts = 1000;
+    private int count = 0;
 
     public void placeShipsRandomly(GridPane gridPane, List<Ship> fleet) {
+
         Random random = new Random();
+        System.out.println("Försök nr " + ++count);
 
         for (Ship ship : fleet) {
             int size = ship.getSize();
@@ -30,18 +33,18 @@ public class GameController {
             int attempts = 0;
 
             do {
-                col = random.nextInt(GRID_SIZE - (horizontal ? size : 1));
-                row = random.nextInt(GRID_SIZE - (horizontal ? 1 : size));
+                if (horizontal) {
+                    col = (int) (Math.random() * (GRID_SIZE - size + 1));
+                    row = random.nextInt(GRID_SIZE);
+                } else {
+                    col = random.nextInt(GRID_SIZE);
+                    row = (int) (Math.random() * (GRID_SIZE - size + 1));
+                }
 
                 attempts++;
             } while (!isPlacementValid(gridPane, col, row, size, horizontal) && attempts < maxAttempts);
-            if (attempts < maxAttempts) {
-                if (horizontal) {
-                    col = Math.min(col, GRID_SIZE - size);
-                } else {
-                    row = Math.min(row, GRID_SIZE - size);
-                }
 
+            if (attempts < maxAttempts) {
                 for (int i = 0; i < size; i++) {
                     Rectangle rectangle = new Rectangle(20, 20, Color.BLUE);
                     gridPane.add(rectangle, col + (horizontal ? i : 0), row + (horizontal ? 0 : i));

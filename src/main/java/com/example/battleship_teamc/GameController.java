@@ -16,7 +16,7 @@ public class GameController {
     private GridPane ClientGrid;
 
     private static final int GRID_SIZE = 10;
-    private int maxAttempts = 1000;
+    private int maxAttempts = 100;
     private int count = 0;
 
     public void placeShipsRandomly(GridPane gridPane, List<Ship> fleet) {

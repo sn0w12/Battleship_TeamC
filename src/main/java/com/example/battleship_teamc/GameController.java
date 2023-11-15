@@ -20,7 +20,6 @@ public class GameController {
     private int count = 0;
 
     public void placeShipsRandomly(GridPane gridPane, List<Ship> fleet) {
-
         Random random = new Random();
         System.out.println("Försök nr " + ++count);
 
@@ -32,7 +31,9 @@ public class GameController {
             int row;
             int attempts = 0;
 
-            do {
+            boolean placedSuccessfully = false;
+
+            while (!placedSuccessfully && attempts < maxAttempts) {
                 if (horizontal) {
                     col = (int) (Math.random() * (GRID_SIZE - size + 1));
                     row = random.nextInt(GRID_SIZE);
@@ -41,16 +42,23 @@ public class GameController {
                     row = (int) (Math.random() * (GRID_SIZE - size + 1));
                 }
 
-                attempts++;
-            } while (!isPlacementValid(gridPane, col, row, size, horizontal) && attempts < maxAttempts);
-
-            if (attempts < maxAttempts) {
-                for (int i = 0; i < size; i++) {
-                    Rectangle rectangle = new Rectangle(20, 20, Color.BLUE);
-                    gridPane.add(rectangle, col + (horizontal ? i : 0), row + (horizontal ? 0 : i));
+                if (isPlacementValid(gridPane, col, row, size, horizontal)) {
+                    for (int i = 0; i < size; i++) {
+                        Rectangle rectangle = new Rectangle(20, 20, Color.BLUE);
+                        gridPane.add(rectangle, col + (horizontal ? i : 0), row + (horizontal ? 0 : i));
+                    }
+                    placedSuccessfully = true;
                 }
-            } else {
-                System.out.println("Kunde ej placera ut skepp: " + ship.getName());
+
+                attempts++;
+            }
+
+            if (!placedSuccessfully) {
+                // If the ship cannot be placed within maxAttempts, restart the placement process for the entire fleet
+                System.out.println("Kunde ej placera ut skepp: " + ship.getName() + " - Startar om placeringen för hela flottan");
+                ClientGrid.getChildren().remove(1, ClientGrid.getChildren().size());
+                placeShipsRandomly(gridPane, fleet);
+                break; // Exit the loop since we're restarting the placement process
             }
         }
     }

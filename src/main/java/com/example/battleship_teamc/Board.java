@@ -59,11 +59,6 @@ public class Board {
         System.out.println("----------------------------");
     }
 
-
-
-
-
-
     public int getRows() {
         return grid.length;
     }

@@ -17,12 +17,12 @@ public class HelloApplication extends Application {
         stage.setScene(firstScene);
         stage.show();
 
-        Button startClient = (Button) firstScene.lookup("#startClient");
-        Button startServer = (Button) firstScene.lookup("#startServer");
+        Button startClient = (Button) firstScene.lookup("#playAsClient");
+        Button startServer = (Button) firstScene.lookup("#playAsServer");
 
         startClient.setOnAction(event -> {
             try {
-                FXMLLoader clientLoader = new FXMLLoader(HelloApplication.class.getResource("ClientView.fxml"));
+                FXMLLoader clientLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
                 Scene clientScene = new Scene(clientLoader.load());
                 stage.setScene(clientScene);
             } catch (IOException e) {
@@ -32,7 +32,7 @@ public class HelloApplication extends Application {
 
         startServer.setOnAction(event -> {
             try {
-                FXMLLoader serverLoader = new FXMLLoader(HelloApplication.class.getResource("ServerView.fxml"));
+                FXMLLoader serverLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
                 Scene serverScene = new Scene(serverLoader.load());
                 stage.setScene(serverScene);
             } catch (IOException e) {

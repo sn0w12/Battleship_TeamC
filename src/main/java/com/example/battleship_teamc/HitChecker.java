@@ -5,30 +5,59 @@ import java.util.List;
 public class HitChecker {
 
     private Board board;
+    private ShotLog shotLog;
 
-    private List<Coordinate> hits;
-
-    private List<Coordinate> misses;
-
-    public HitChecker(List<Coordinate> hits, List<Coordinate> misses) {
-        this.hits = hits;
-        this.misses = misses;
+    public boolean firstShot(int row, int col){
+        boolean bool;
+        this.shotLog.logShot(row, col);
+        if (this.board.shoot(row, col)) {
+            System.out.println("Ship was hit at " + row + "," + col);
+            this.shotLog.logShot(row, col);
+            this.shotLog.logHit(row, col);
+            bool = true;
+        } else {
+            System.out.println("Not hit at " + row + "," + col);
+            this.shotLog.logShot(row, col);
+            this.shotLog.logMisses(row, col);
+            bool = false;
+        }
+        return bool;
     }
 
-    public boolean checkHit(int row, int col) {
-        if(this.board.shoot(row, col)){
-            System.out.println("Ship was hit at " + row + "," + col);
-            return true;
-        }else {
-            System.out.println("Not hit at " + row + "," + col);
-            return false;
+    public String checkHit(int row, int col) {
+        String status = " ";
+            for (int i = 0; i < this.shotLog.getFiredShots().size(); i++) {
+                if (row == this.shotLog.getFiredShots().get(i).getRow()
+                        && col == this.shotLog.getFiredShots().get(i).getCol()) {
+                    System.out.println("Shot already in list, Try again!");
+                    status = "fail";
+                } else {
+                    System.out.println("Coordinate unique");
+                    if (this.board.shoot(row, col)) {
+                        System.out.println("Ship was hit at " + row + "," + col);
+                        shotLog.logShot(row, col);
+                        shotLog.logHit(row, col);
+                        status = "hit";
+                    } else {
+                        System.out.println("Not hit at " + row + "," + col);
+                        shotLog.logShot(row, col);
+                        shotLog.logMisses(row, col);
+                        status = "miss";
+                    }
+                }
+
+
         }
+
+        return status;
     }
 
     public HitChecker() {
+        this.shotLog = new ShotLog(); // Now we have all lists needed for logging shots.
     }
 
     public HitChecker(Board board) {
         this.board = board;
+        this.shotLog = new ShotLog();
     }
 }

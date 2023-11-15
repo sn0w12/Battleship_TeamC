@@ -8,14 +8,21 @@ public class TrashMain {
         Board testBoard = new Board();
         HitChecker hitChecker = new HitChecker(testBoard);
 
-        testBoard.placeShip(0,0);
-        testBoard.placeShip(0,1);
-        testBoard.placeShip(0,2);
-        testBoard.placeShip(0,3);
-        testBoard.placeShip(0,4);
+        // place test ships
 
+        for (int i = 0; i < 5; i++) {
+            testBoard.placeShip(0, i);
+        }
+        for (int i = 0; i < 4 ; i++) {
+            testBoard.placeShip(2,i);
+        }
+        for (int i = 0; i < 3 ; i++) {
+            testBoard.placeShip(4,i);
+        }
 
-        hitChecker.checkHit(0,0);
+        System.out.println(hitChecker.firstShot(0, 0));
+        System.out.println(hitChecker.checkHit(1,1));
+
 
         System.out.println(Arrays.deepToString(testBoard.getGrid()));
 

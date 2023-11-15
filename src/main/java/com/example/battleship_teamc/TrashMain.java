@@ -1,12 +1,18 @@
 package com.example.battleship_teamc;
 import java.util.Arrays;
-/*TrashMain så man kan prova programmet i terminalen utan
-att behöver kör hela client och server programmet mycket snabbare sätt att testa metoder.-briana
- */
+
 public class TrashMain {
     public static void  main(String[] args){
         Board testBoard = new Board();
         HitChecker hitChecker = new HitChecker(testBoard);
+
+        //testing first and second shot methods, and if shots are logged - Briana
+        hitChecker.firstShot();
+        hitChecker.sendShot();
+
+        System.out.println(hitChecker.getShotLog().getFiredShots().size());
+
+
 
         // place test ships
 
@@ -20,18 +26,12 @@ public class TrashMain {
             testBoard.placeShip(4,i);
         }
 
-        System.out.println(hitChecker.firstShot(0, 0));
-        System.out.println(hitChecker.checkHit(1,1));
-
+        //testing method for checking enemy shot, and changing grid value from S to X - Briana
+Coordinate c = new Coordinate(0, 0);
+        hitChecker.checkShot(c);
 
         System.out.println(Arrays.deepToString(testBoard.getGrid()));
 
-        /*ShotLog shotLog = new ShotLog();
-
-        shotLog.logShot(0,0);
-        shotLog.logHit(0,0);
-        shotLog.logMisses(0,6);
-*/
     }
 
 }

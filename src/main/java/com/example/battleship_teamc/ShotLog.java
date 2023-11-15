@@ -25,10 +25,9 @@ public class ShotLog {
         this.hits = hits;
         this.misses = misses;
     }
-
-    public void logShot (int row, int col){
-        Coordinate coordinate = new Coordinate(row,col);
-        this.firedShots.add(coordinate);
+ // Saves coordinate in list "firedShots"
+    public void logShot (Coordinate c){
+        this.firedShots.add(c);
         System.out.println("added coordinate " + this.firedShots.get(0).toString());
     }
 

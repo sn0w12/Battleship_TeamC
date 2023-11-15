@@ -85,7 +85,15 @@ public class Board {
     }
 
     public boolean hasShip(int newRow, int newCol) {
-        return grid[newRow][newCol] == 'S';
+        boolean flag;
+        //if coordinate contains ship, return true and change S to X, else return false -Briana
+        if (grid[newRow][newCol] == 'S'){
+            markHit(newRow, newCol, 'X');
+            flag = true;
+        } else {
+            flag = false;
+        }
+        return flag;
     }
 // Lagt till bool om det var hit eller miss -Briana
     public boolean shoot(int row, int col) {
@@ -100,6 +108,11 @@ public class Board {
 
     public char getCell(int row, int col) {
         return grid[row][col];
+    }
+
+    //marks a hit cell with X - Briana
+    public void markHit(int row, int col, char newVal) {
+        grid[row][col] = newVal;
     }
 
     public boolean hasBeenFired(int row, int col) {

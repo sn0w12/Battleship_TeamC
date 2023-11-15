@@ -19,8 +19,8 @@ public class GameController {
     private final Fleet playerFleet;
 
     public GameController() {
-        this.gameBoard = new Board(GRID_SIZE, GRID_SIZE); // Assuming a 10x10 board
-        this.playerFleet = new Fleet(); // Initialize player fleet
+        this.gameBoard = new Board(GRID_SIZE, GRID_SIZE);
+        this.playerFleet = new Fleet();
         this.gameLogic = new Logic(gameBoard, playerFleet);
     }
 
@@ -38,14 +38,11 @@ public class GameController {
                 Rectangle rectangle = new Rectangle(20, 20);
                 char cell = gameBoard.getCell(row, col);
 
-                if (cell == 'S') {
-                    rectangle.setFill(Color.GRAY); // Ship
-                } else if (cell == 'X') {
-                    rectangle.setFill(Color.RED); // Hit
-                } else if (cell == 'O') {
-                    rectangle.setFill(Color.BLACK); // Miss
-                } else {
-                    rectangle.setFill(Color.BLUE); // Water
+                switch (cell) {
+                    case 'S' -> rectangle.setFill(Color.GRAY); // Ship
+                    case 'X' -> rectangle.setFill(Color.RED); // Hit
+                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                    default -> rectangle.setFill(Color.BLUE); // Water
                 }
 
                 ClientGrid.add(rectangle, col, row);

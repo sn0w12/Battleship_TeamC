@@ -23,18 +23,18 @@ public class Server {
 
             // Skapa och initiera spelplaner, flottor
             Board playerBoard = new Board(); // Skapa en spelplan för spelaren
-            Board opponentBoard = new Board(); // Skapa en spelplan för motståndaren
             Fleet playerFleet = new Fleet(); // Skapa en flotta för spelaren
-            Fleet opponentFleet = new Fleet(); // Skapa en flotta för motståndaren
 
-            Logic gameLogic = new Logic(playerBoard, opponentBoard, playerFleet, opponentFleet);
+            Logic gameLogic = new Logic(playerBoard, playerFleet);
 
             // Spellogik för servern
-            while (gameLogic.isGameFinished()) {
+            while (gameLogic.areShipsLeft(playerBoard)) {
                 // Serverns tur att skjuta
                 int serverPlayer = 1; // Ange serverns spelar-ID (1 i det här fallet)
+                /*
                 String serverShotResult = gameLogic.randomShotAndShoot(serverPlayer); // Slumpmässigt skott och utför det
                 out.println(serverShotResult); // Skicka skottresultatet till klienten
+                 */
 
                 // Läs svar från klienten och hantera det
                 String clientResponse = clientInput.nextLine();

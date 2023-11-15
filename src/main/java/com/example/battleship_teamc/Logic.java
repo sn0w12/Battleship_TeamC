@@ -5,12 +5,10 @@ import java.util.Random;
 
 public class Logic {
     private final Board playerBoard;
-    private final Board opponentBoard;
 
-    public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet) {
+    public Logic(Board playerBoard, Fleet playerFleet) {
         // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
         this.playerBoard = playerBoard;
-        this.opponentBoard = opponentBoard;
 
         // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
         placeShips(playerBoard, playerFleet);
@@ -70,32 +68,6 @@ public class Logic {
         return isValid;
     }
 
-    /*private boolean isValidPlacement(Board board, int size, int row, int col, char orientation) {
-        if (orientation == 'H') {
-            if (col + size > board.getCols()) {
-                return false; // Placeringen går utanför spelplanen horisontellt
-            }
-
-            for (int i = 0; i < size; i++) {
-                if (board.hasShip(row, col + i)) {
-                    return false; // En annan båt finns redan i närheten
-                }
-            }
-        } else if (orientation == 'V') {
-            if (row + size > board.getRows()) {
-                return false; // Placeringen går utanför spelplanen vertikalt
-            }
-
-            for (int i = 0; i < size; i++) {
-                if (board.hasShip(row + i, col)) {
-                    return false; // En annan båt finns redan i närheten
-                }
-            }
-        }
-
-        return true; // Placeringen är giltig
-    }*/
-
     private void placeShipOnBoard(Board board, int size, int row, int col, char orientation) {
         if (orientation == 'H') {
             for (int i = 0; i < size; i++) {
@@ -116,30 +88,11 @@ public class Logic {
 
     // Metod för att utföra ett skott
     private void shoot(int player, int row, int col) {
-        Board targetBoard = (player == 1) ? opponentBoard : playerBoard;
 
-        if (row >= 0 && row < targetBoard.getRows() && col >= 0 && col < targetBoard.getCols()) {
-            if (!targetBoard.hasBeenFired(row, col)) {
-                targetBoard.shoot(row, col);
-
-                char result = targetBoard.getCell(row, col);
-                if (result == 'X') {
-                    if (targetBoard.isAllShipsSunk()) {
-                        System.out.println("Spelare " + player + " sänkte ett skepp!");
-                    } else {
-                        System.out.println("Spelare " + player + " träffade!");
-                    }
-                } else {
-                    System.out.println("Spelare " + player + " missade!");
-                }
-            }
-            playerBoard.printBoard();
-
-            opponentBoard.printBoard();
-        }
     }
 
     // Ny metod som kombinerar random skott och skottutförande
+    /*
     public String randomShotAndShoot(int player) {
         Random random = new Random();
         int row, col;
@@ -173,9 +126,10 @@ public class Logic {
 
         return shotResult;
     }
+     */
 
     // Helper method to check if any ships are left on a board
-    private boolean areShipsLeft(Board board) {
+    boolean areShipsLeft(Board board) {
         for (int row = 0; row < board.getRows(); row++) {
             for (int col = 0; col < board.getCols(); col++) {
                 if (board.getCell(row, col) == 'S') {
@@ -184,12 +138,6 @@ public class Logic {
             }
         }
         return false; // No ships left
-    }
-
-    // Method to check if the game is finished
-    public boolean isGameFinished() {
-        // Check both boards for any remaining ships
-        return areShipsLeft(playerBoard) && areShipsLeft(opponentBoard);
     }
 
     public String getCurrentPlayer() {

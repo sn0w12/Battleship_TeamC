@@ -17,13 +17,11 @@ public class GameController {
     private final Logic gameLogic;
     private static final int GRID_SIZE = 10;
     private final Fleet playerFleet;
-    private final Fleet opponentFleet; // Assuming you have opponent fleet
 
     public GameController() {
         this.gameBoard = new Board(GRID_SIZE, GRID_SIZE); // Assuming a 10x10 board
         this.playerFleet = new Fleet(); // Initialize player fleet
-        this.opponentFleet = new Fleet(); // Initialize opponent fleet
-        this.gameLogic = new Logic(gameBoard, new Board(GRID_SIZE, GRID_SIZE), playerFleet, opponentFleet);
+        this.gameLogic = new Logic(gameBoard, playerFleet);
     }
 
     public void placeShipsRandomly(Board gameBoard, Fleet playerFleet) {

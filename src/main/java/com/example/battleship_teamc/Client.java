@@ -21,10 +21,10 @@ public class Client {
             Fleet playerFleet = new Fleet(); // Skapa en flotta för spelaren
             Fleet opponentFleet = new Fleet(); // Skapa en flotta för motståndaren
 
-            Logic gameLogic = new Logic(playerBoard, opponentBoard, playerFleet, opponentFleet);
+            Logic gameLogic = new Logic(playerBoard, playerFleet);
 
             // Spellogik för klienten
-            while (gameLogic.isGameFinished()) {
+            while (gameLogic.areShipsLeft(playerBoard)) {
                 // Läs skottresultat från servern
                 if (serverInput.hasNextLine()) {
                     String serverShotResult = serverInput.nextLine();
@@ -37,9 +37,12 @@ public class Client {
                 // Klientens tur att skjuta
 
                 int clientPlayer = 2; // Ange klientens spelar-ID (2 i det här fallet)
+                /*
                 String clientShot = gameLogic.randomShotAndShoot(clientPlayer); // Slumpmässigt skott och utför det
                 System.out.println("Klienten skjuter: " + clientShot);
                 out.println(clientShot); // Skicka skottet till servern
+
+                 */
 
             }
 

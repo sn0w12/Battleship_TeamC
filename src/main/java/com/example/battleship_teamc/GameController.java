@@ -36,6 +36,12 @@ public class GameController {
                 attempts++;
             } while (!isPlacementValid(gridPane, col, row, size, horizontal) && attempts < maxAttempts);
             if (attempts < maxAttempts) {
+                if (horizontal) {
+                    col = Math.min(col, GRID_SIZE - size);
+                } else {
+                    row = Math.min(row, GRID_SIZE - size);
+                }
+
                 for (int i = 0; i < size; i++) {
                     Rectangle rectangle = new Rectangle(20, 20, Color.BLUE);
                     gridPane.add(rectangle, col + (horizontal ? i : 0), row + (horizontal ? 0 : i));

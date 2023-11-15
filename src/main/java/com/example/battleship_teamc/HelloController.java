@@ -6,8 +6,8 @@ import javafx.scene.control.Label;
 
 public class HelloController {
 
-    public Button startServer;
-    public Button startClient;
+    public Button playAsServer;
+    public Button playAsClient;
 
 
 

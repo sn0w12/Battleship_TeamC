@@ -13,12 +13,12 @@
             <Image url="@../../../Images/skeppbild.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="startServer" layoutX="417.0" layoutY="74.0" prefHeight="31.0" prefWidth="172.0" text="SPELA SOM SERVER" AnchorPane.bottomAnchor="554.0" AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="64.0" AnchorPane.topAnchor="74.0">
+      <Button fx:id="playAsServer" layoutX="417.0" layoutY="74.0" prefHeight="31.0" prefWidth="172.0" text="SPELA SOM SERVER" AnchorPane.bottomAnchor="554.0" AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="64.0" AnchorPane.topAnchor="74.0">
          <font>
             <Font name="Britannic Bold" size="15.0" />
          </font>
       </Button>
-      <Button fx:id="startClient" layoutX="69.0" layoutY="74.0" prefHeight="31.0" prefWidth="172.0" text="SPELA SOM KLIENT" AnchorPane.bottomAnchor="554.0" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="417.0" AnchorPane.topAnchor="74.0">
+      <Button fx:id="playAsClient" layoutX="69.0" layoutY="74.0" prefHeight="31.0" prefWidth="172.0" text="SPELA SOM KLIENT" AnchorPane.bottomAnchor="554.0" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="417.0" AnchorPane.topAnchor="74.0">
          <font>
             <Font name="Britannic Bold" size="15.0" />
          </font>

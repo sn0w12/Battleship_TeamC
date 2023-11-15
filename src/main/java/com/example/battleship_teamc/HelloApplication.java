@@ -17,8 +17,8 @@ public class HelloApplication extends Application {
         stage.setScene(firstScene);
         stage.show();
 
-        Button startClient = (Button) firstScene.lookup("#startClient");
-        Button startServer = (Button) firstScene.lookup("#startServer");
+        Button startClient = (Button) firstScene.lookup("#playAsClient");
+        Button startServer = (Button) firstScene.lookup("#playAsServer");
 
         startClient.setOnAction(event -> {
             try {

@@ -31,9 +31,9 @@ public class Fleet {
        this.playerFleet.add(battleship1);
        this.playerFleet.add(battleship2);
 
-       this.playerFleet.add(cruiser1);
+       /*this.playerFleet.add(cruiser1);
        this.playerFleet.add(cruiser2);
-       this.playerFleet.add(cruiser3);
+       this.playerFleet.add(cruiser3);*/
 
        this.playerFleet.add(submarine1);
        this.playerFleet.add(submarine2);

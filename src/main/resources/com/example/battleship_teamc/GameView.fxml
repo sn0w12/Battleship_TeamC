@@ -68,10 +68,11 @@
       <HBox layoutX="121.0" layoutY="45.0" prefHeight="28.0" prefWidth="358.0" spacing="50.0" AnchorPane.bottomAnchor="327.0" AnchorPane.leftAnchor="121.0" AnchorPane.rightAnchor="121.0" AnchorPane.topAnchor="45.0">
          <children>
             <Button fx:id="startGameButton" mnemonicParsing="false" text="Starta Spelet!" />
-            <Button fx:id="randomizeShipsButton" mnemonicParsing="false" text="Slumpa skepp" />
+            <Button fx:id="randomizeShipsButton" mnemonicParsing="false" onAction="#initialize" text="Slumpa skepp" />
             <Button fx:id="mainMenuButton" mnemonicParsing="false" text="Huvudmeny" />
          </children>
       </HBox>
-      <TextField layoutX="61.0" layoutY="321.0" />
+      <TextField alignment="CENTER" layoutX="84.0" layoutY="309.0" prefHeight="25.0" prefWidth="102.0" text="Spelbräda Klient" />
+      <TextField alignment="CENTER" layoutX="410.0" layoutY="309.0" prefHeight="25.0" prefWidth="110.0" text="Spelbräda Server" />
    </children>
 </AnchorPane>

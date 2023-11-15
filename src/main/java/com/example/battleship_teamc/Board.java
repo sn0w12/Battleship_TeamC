@@ -71,7 +71,7 @@ public class Board {
     }
 
     public void placeShip(int row, int col) {
-        grid[row][col] = 'S'; // Använd '*' för att representera en del av ett skepp
+        grid[row][col] = 'S';
     }
 
     public boolean hasShip(int newRow, int newCol) {

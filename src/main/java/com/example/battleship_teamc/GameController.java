@@ -32,18 +32,20 @@ public class GameController {
     }
 
     private void updateGridPaneFromBoard() {
-        ClientGrid.getChildren().clear(); // Clear existing content
+        ClientGrid.getChildren().clear();
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 Rectangle rectangle = new Rectangle(20, 20);
-                char cell = gameBoard.getCell(row, col); // Assuming getCell() method exists in Board
+                char cell = gameBoard.getCell(row, col);
 
-                if (cell == 'S') { // Assuming 'S' represents a ship
-                    rectangle.setFill(Color.GRAY);
+                if (cell == 'S') {
+                    rectangle.setFill(Color.GRAY); // Ship
                 } else if (cell == 'X') {
-                    rectangle.setFill(Color.RED);
+                    rectangle.setFill(Color.RED); // Hit
+                } else if (cell == 'O') {
+                    rectangle.setFill(Color.BLACK); // Miss
                 } else {
-                    rectangle.setFill(Color.BLUE);
+                    rectangle.setFill(Color.BLUE); // Water
                 }
 
                 ClientGrid.add(rectangle, col, row);

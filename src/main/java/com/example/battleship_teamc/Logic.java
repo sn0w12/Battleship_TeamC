@@ -9,9 +9,6 @@ public class Logic {
     public Logic(Board playerBoard, Fleet playerFleet) {
         // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
         this.playerBoard = playerBoard;
-
-        // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
-        placeShips(playerBoard, playerFleet);
     }
 
     void placeShips(Board board, Fleet fleet) {
@@ -83,7 +80,7 @@ public class Logic {
     // Metod för att kontrollera om ett skott är en träff
     boolean isHit(Board board, int row, int col) {
         // Miss
-        return board.getCell(row, col) == 'S'; // Träff
+        return board.getCell(row, col) == 'X'; // Träff
     }
 
     // Metod för att utföra ett skott

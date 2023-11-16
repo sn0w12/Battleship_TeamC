@@ -74,7 +74,6 @@ public class GameController {
                 grid.add(rectangle, col, row);
             }
         }
-        return true;
     }
 
     @FXML

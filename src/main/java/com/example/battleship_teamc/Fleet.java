@@ -54,6 +54,12 @@ public class Fleet {
         this.playerFleet = playerFleet;
     }
 
+    public void resetFleet() {
+        for (Ship ship : playerFleet) {
+            ship.setPlaced(false);
+        }
+    }
+
     @Override
     public String toString() {
         return "Fleet{" +

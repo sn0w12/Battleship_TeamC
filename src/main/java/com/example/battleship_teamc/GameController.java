@@ -1,6 +1,6 @@
 package com.example.battleship_teamc;
+
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +18,11 @@ public class GameController {
     private GridPane serverGrid;
     private GridPane tempGrid;
     private boolean isServer;
+    
+    private final Board board;
+    private final Logic logic;
+    private static final int GRID_SIZE = 10;
+    private final Fleet fleet;
 
     public boolean isServer() {
         return isServer;
@@ -34,95 +39,45 @@ public class GameController {
         return serverGrid;
     }
 
-    private static final int GRID_SIZE = 10;
-    private int maxAttempts = 100;
-    private int count = 0;
-
-    public void setTempGrid(GridPane gridPane){
-        this.tempGrid = gridPane;
+    public GameController() {
+        this.board = new Board(GRID_SIZE, GRID_SIZE);
+        this.fleet = new Fleet();
+        this.logic = new Logic(board, fleet);
     }
 
-    public void placeShipsRandomly(GridPane gridPane, List<Ship> fleet) {
-        Random random = new Random();
-        System.out.println("Försök nr " + ++count);
-
-        for (Ship ship : fleet) {
-            int size = ship.getSize();
-            boolean horizontal = random.nextBoolean();
-
-            int col;
-            int row;
-            int attempts = 0;
-
-            boolean placedSuccessfully = false;
-
-            while (!placedSuccessfully && attempts < maxAttempts) {
-                if (horizontal) {
-                    col = (int) (Math.random() * (GRID_SIZE - size + 1));
-                    row = random.nextInt(GRID_SIZE);
-                } else {
-                    col = random.nextInt(GRID_SIZE);
-                    row = (int) (Math.random() * (GRID_SIZE - size + 1));
-                }
-
-                if (isPlacementValid(gridPane, col, row, size, horizontal)) {
-                    for (int i = 0; i < size; i++) {
-                        Rectangle rectangle = new Rectangle(20, 20, Color.BLUE);
-                        gridPane.add(rectangle, col + (horizontal ? i : 0), row + (horizontal ? 0 : i));
-                    }
-                    placedSuccessfully = true;
-                }
-
-                attempts++;
-            }
-
-            if (!placedSuccessfully) {
-                // If the ship cannot be placed within maxAttempts, restart the placement process for the entire fleet
-                System.out.println("Kunde ej placera ut skepp: " + ship.getName() + " - Startar om placeringen för hela flottan");
-                gridPane.getChildren().remove(1, gridPane.getChildren().size());
-                placeShipsRandomly(gridPane, fleet);
-                break; // Exit the loop since we're restarting the placement process
-            }
-        }
+    public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
+        gameBoard.clearBoard();
+        playerFleet.resetFleet();
+        gameLogic.placeShips(gameBoard, playerFleet);
+        updateGridPaneFromBoard(grid, gameBoard);
     }
 
-    private boolean isPlacementValid(GridPane gridPane, int col, int row, int size, boolean horizontal) {
-        // Check the surrounding cells including diagonals
-        for (int i = -1; i <= size; i++) {
-            for (int j = -1; j <= size; j++) {
-                int currentCol = col + (horizontal ? i : 0);
-                int currentRow = row + (horizontal ? 0 : j);
+    private void updateGridPaneFromBoard(GridPane grid, Board gameBoard) {
+        grid.getChildren().clear();
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                Rectangle rectangle = new Rectangle(20, 20);
+                char cell = gameBoard.getCell(row, col);
 
-                if (currentCol >= 0 && currentCol < GRID_SIZE && currentRow >= 0 && currentRow < GRID_SIZE) {
-                    // Check if the cell or its adjacent cells are already occupied
-                    for (Node node : gridPane.getChildren()) {
-                        Integer nodeCol = GridPane.getColumnIndex(node);
-                        Integer nodeRow = GridPane.getRowIndex(node);
-
-                        if (nodeCol != null && nodeRow != null &&
-                                (nodeCol >= currentCol - 1 && nodeCol <= currentCol + 1) &&
-                                (nodeRow >= currentRow - 1 && nodeRow <= currentRow + 1)) {
-                            return false; // Ship cannot be placed here; cell or adjacent cell is already occupied.
-                        }
-                    }
+                switch (cell) {
+                    case 'S' -> rectangle.setFill(Color.GRAY); // Ship
+                    case 'X' -> rectangle.setFill(Color.RED); // Hit
+                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                    default -> rectangle.setFill(Color.BLUE); // Water
                 }
+
+                grid.add(rectangle, col, row);
             }
         }
-
-        return true;
     }
 
     public void placeShipsOnMap() {
-
-        Fleet fleet = new Fleet();
         if (isServer){
             serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
-            placeShipsRandomly(serverGrid, fleet.getPlayerFleet());
+            placeShipsRandomly(serverGrid, board, fleet, logic);
         } else {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
-            placeShipsRandomly(clientGrid, fleet.getPlayerFleet());
+            placeShipsRandomly(clientGrid, board, fleet, logic);
         }
-
     }
 }
-

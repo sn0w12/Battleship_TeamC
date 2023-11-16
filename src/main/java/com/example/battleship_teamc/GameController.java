@@ -18,13 +18,11 @@ public class GameController {
     private GridPane serverGrid;
     private GridPane tempGrid;
     private boolean isServer;
-    private final Board clientBoard;
-    private final Board serverBoard;
-    private final Logic clientLogic;
-    private final Logic serverLogic;
+    
+    private final Board board;
+    private final Logic logic;
     private static final int GRID_SIZE = 10;
-    private final Fleet clientFleet;
-    private final Fleet serverFleet;
+    private final Fleet fleet;
 
     public boolean isServer() {
         return isServer;
@@ -42,12 +40,9 @@ public class GameController {
     }
 
     public GameController() {
-        this.clientBoard = new Board(GRID_SIZE, GRID_SIZE);
-        this.serverBoard = new Board(GRID_SIZE, GRID_SIZE);
-        this.clientFleet = new Fleet();
-        this.serverFleet = new Fleet();
-        this.clientLogic = new Logic(clientBoard, clientFleet);
-        this.serverLogic = new Logic(serverBoard, serverFleet);
+        this.board = new Board(GRID_SIZE, GRID_SIZE);
+        this.fleet = new Fleet();
+        this.logic = new Logic(board, fleet);
     }
 
     public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
@@ -77,13 +72,12 @@ public class GameController {
     }
 
     public void placeShipsOnMap() {
-        Fleet fleet = new Fleet();
         if (isServer){
             serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
-            placeShipsRandomly(serverGrid, serverBoard, fleet, serverLogic);
+            placeShipsRandomly(serverGrid, board, fleet, logic);
         } else {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
-            placeShipsRandomly(clientGrid, clientBoard, fleet, clientLogic);
+            placeShipsRandomly(clientGrid, board, fleet, logic);
         }
     }
 }

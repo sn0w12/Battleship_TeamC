@@ -1,22 +1,27 @@
 package com.example.battleship_teamc;
-
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import ships.Ship;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
 public class GameController {
-
+    @FXML
+    Button mainMenuButton;
     @FXML
     private GridPane clientGrid;
-
     @FXML
     private GridPane serverGrid;
-    private GridPane tempGrid;
     private boolean isServer;
     
     private final Board board;
@@ -27,7 +32,6 @@ public class GameController {
     public boolean isServer() {
         return isServer;
     }
-
     public void setServer(boolean server) {
         isServer = server;
     }
@@ -64,11 +68,21 @@ public class GameController {
                     case 'X' -> rectangle.setFill(Color.RED); // Hit
                     case 'O' -> rectangle.setFill(Color.BLACK); // Miss
                     default -> rectangle.setFill(Color.BLUE); // Water
+
                 }
 
                 grid.add(rectangle, col, row);
             }
         }
+        return true;
+    }
+
+    @FXML
+    private void handleMainMenuButton(Event event) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(HelloApplication.class.getResource("Hello-View.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader);
+        stage.setScene(scene);
     }
 
     public void placeShipsOnMap() {

@@ -1,46 +1,40 @@
 package com.example.battleship_teamc;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import ships.Ship;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
 public class GameController {
-
+    @FXML
+    Button mainMenuButton;
     @FXML
     private GridPane clientGrid;
-
     @FXML
     private GridPane serverGrid;
-    private GridPane tempGrid;
     private boolean isServer;
 
     public boolean isServer() {
         return isServer;
     }
-
     public void setServer(boolean server) {
         isServer = server;
-    }
-
-    public GridPane getClientGrid() {
-        return clientGrid;
-    }
-    public GridPane getServerGrid() {
-        return serverGrid;
     }
 
     private static final int GRID_SIZE = 10;
     private int maxAttempts = 100;
     private int count = 0;
 
-    public void setTempGrid(GridPane gridPane){
-        this.tempGrid = gridPane;
-    }
 
     public void placeShipsRandomly(GridPane gridPane, List<Ship> fleet) {
         Random random = new Random();
@@ -77,24 +71,24 @@ public class GameController {
             }
 
             if (!placedSuccessfully) {
-                // If the ship cannot be placed within maxAttempts, restart the placement process for the entire fleet
+                // Om skeppen ej kan placeras ut inom maxförsöken, starta om processen för hela flottan
                 System.out.println("Kunde ej placera ut skepp: " + ship.getName() + " - Startar om placeringen för hela flottan");
                 gridPane.getChildren().remove(1, gridPane.getChildren().size());
                 placeShipsRandomly(gridPane, fleet);
-                break; // Exit the loop since we're restarting the placement process
+                break; // Avsluta loopen eftersom vi startar om processen
             }
         }
     }
 
     private boolean isPlacementValid(GridPane gridPane, int col, int row, int size, boolean horizontal) {
-        // Check the surrounding cells including diagonals
+        // Kontrollera närliggande celler inkl diagonala
         for (int i = -1; i <= size; i++) {
             for (int j = -1; j <= size; j++) {
                 int currentCol = col + (horizontal ? i : 0);
                 int currentRow = row + (horizontal ? 0 : j);
 
                 if (currentCol >= 0 && currentCol < GRID_SIZE && currentRow >= 0 && currentRow < GRID_SIZE) {
-                    // Check if the cell or its adjacent cells are already occupied
+                    // Kontrollera om cellen och närliggande celler är upptagna
                     for (Node node : gridPane.getChildren()) {
                         Integer nodeCol = GridPane.getColumnIndex(node);
                         Integer nodeRow = GridPane.getRowIndex(node);
@@ -102,14 +96,21 @@ public class GameController {
                         if (nodeCol != null && nodeRow != null &&
                                 (nodeCol >= currentCol - 1 && nodeCol <= currentCol + 1) &&
                                 (nodeRow >= currentRow - 1 && nodeRow <= currentRow + 1)) {
-                            return false; // Ship cannot be placed here; cell or adjacent cell is already occupied.
+                            return false; // Skepp kan ej placeras här; cell eller närliggande cell är upptagen.
                         }
                     }
                 }
             }
         }
-
         return true;
+    }
+
+    @FXML
+    private void handleMainMenuButton(Event event) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(HelloApplication.class.getResource("Hello-View.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader);
+        stage.setScene(scene);
     }
 
     public void placeShipsOnMap() {
@@ -122,7 +123,6 @@ public class GameController {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
             placeShipsRandomly(clientGrid, fleet.getPlayerFleet());
         }
-
     }
 }
 

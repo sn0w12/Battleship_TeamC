@@ -1,7 +1,6 @@
 package com.example.battleship_teamc;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,11 +12,35 @@ import java.util.Random;
 public class GameController {
 
     @FXML
-    private GridPane ClientGrid;
+    private GridPane clientGrid;
+
+    @FXML
+    private GridPane serverGrid;
+    private GridPane tempGrid;
+    private boolean isServer;
+
+    public boolean isServer() {
+        return isServer;
+    }
+
+    public void setServer(boolean server) {
+        isServer = server;
+    }
+
+    public GridPane getClientGrid() {
+        return clientGrid;
+    }
+    public GridPane getServerGrid() {
+        return serverGrid;
+    }
 
     private static final int GRID_SIZE = 10;
-    private int maxAttempts = 1000;
+    private int maxAttempts = 100;
     private int count = 0;
+
+    public void setTempGrid(GridPane gridPane){
+        this.tempGrid = gridPane;
+    }
 
     public void placeShipsRandomly(GridPane gridPane, List<Ship> fleet) {
         Random random = new Random();
@@ -56,7 +79,7 @@ public class GameController {
             if (!placedSuccessfully) {
                 // If the ship cannot be placed within maxAttempts, restart the placement process for the entire fleet
                 System.out.println("Kunde ej placera ut skepp: " + ship.getName() + " - Startar om placeringen för hela flottan");
-                ClientGrid.getChildren().remove(1, ClientGrid.getChildren().size());
+                gridPane.getChildren().remove(1, gridPane.getChildren().size());
                 placeShipsRandomly(gridPane, fleet);
                 break; // Exit the loop since we're restarting the placement process
             }
@@ -89,11 +112,17 @@ public class GameController {
         return true;
     }
 
-    public void initialize() {
-        // This method is called after the FXML file has been loaded.
-        ClientGrid.getChildren().remove(1, ClientGrid.getChildren().size());
+    public void placeShipsOnMap() {
+
         Fleet fleet = new Fleet();
-        placeShipsRandomly(ClientGrid, fleet.getPlayerFleet());
+        if (isServer){
+            serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
+            placeShipsRandomly(serverGrid, fleet.getPlayerFleet());
+        } else {
+            clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
+            placeShipsRandomly(clientGrid, fleet.getPlayerFleet());
+        }
+
     }
 }
 

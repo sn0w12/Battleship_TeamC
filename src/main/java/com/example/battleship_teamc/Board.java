@@ -2,6 +2,7 @@
 package com.example.battleship_teamc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Board {
     private char[][] grid; // Använd char för att representera spelplanen
@@ -25,37 +26,30 @@ public class Board {
     private void initializeBoard() {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                grid[i][j] = 'O'; // 'O' for empty cells
+                grid[i][j] = '.'; // 'O' for empty cells
             }
         }
     }
 
-
     public void printBoard() {
+        // Print the column headers
         System.out.print("  ");
         for (int i = 0; i < grid[0].length; i++) {
             System.out.print(i + " ");
         }
         System.out.println();
 
+        // Print each row with its corresponding letter and cell status
         for (int i = 0; i < grid.length; i++) {
             char letter = (char) ('A' + i);
             System.out.print(letter + " ");
-            for (int j = 0; j < grid[0].length; j++) {
-                char cell = grid[i][j];
-                if (cell == 'S') {
-                    System.out.print('S' + " "); // 'S' for ships
-                } else if (cell == 'X') {
-                    System.out.print('X' + " "); // 'X' for hit ships
-                } else if (cell == 'O') {
-                    System.out.print('O' + " "); // 'O' for empty cells
-                } else {
-                    System.out.print("  "); // Two spaces for other symbols
-                }
+            for (int j = 0; j < grid[i].length; j++) {
+                System.out.print(grid[i][j] + " ");  // Print the status of the cell
             }
-            System.out.println();
-
+            System.out.println();  // Newline at the end of each row
         }
+
+        // Print a separator line
         System.out.println("----------------------------");
     }
 
@@ -83,11 +77,14 @@ public class Board {
         return grid[newRow][newCol] == 'S';
     }
 
-    public void shoot(int row, int col) {
+    // Lagt till bool om det var hit eller miss -Briana
+    public boolean shoot(int row, int col) {
         if (grid[row][col] == 'S') {
             grid[row][col] = 'X'; // 'X' representerar träff på ett skepp
+            return true;
         } else {
             grid[row][col] = 'O'; // 'O' representerar miss
+            return false;
         }
     }
 
@@ -95,19 +92,28 @@ public class Board {
         return grid[row][col];
     }
 
+    //marks a hit cell with X - Briana
+    public void markHit(int row, int col, char newVal) {
+        grid[row][col] = newVal;
+    }
+
     public boolean hasBeenFired(int row, int col) {
         return false;
     }
 
     public boolean isAllShipsSunk() {
-        for (int i = 0; i < grid.length; i++) {
+        for (char[] chars : grid) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == 'S' || grid[i][j] == 'X') {
+                if (chars[j] == 'S' || chars[j] == 'X') {
                     return false; // There is still an unsunk ship
                 }
             }
         }
         return true; // All ships have been sunk
     }
-
+    public void clearBoard() {
+        for (int i = 0; i < grid.length; i++) {
+            Arrays.fill(grid[i], '.');
+        }
+    }
 }

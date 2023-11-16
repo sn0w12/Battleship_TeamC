@@ -1,28 +1,17 @@
-
 package com.example.battleship_teamc;
 
 import ships.*;
 import java.util.Random;
 
-
 public class Logic {
-
     private final Board playerBoard;
-    private final Board opponentBoard;
 
-
-    public Logic(Board playerBoard, Board opponentBoard, Fleet playerFleet, Fleet opponentFleet) {
+    public Logic(Board playerBoard, Fleet playerFleet) {
         // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
         this.playerBoard = playerBoard;
-        this.opponentBoard = opponentBoard;
-
-
-        // Metoden placeShips() anropas för att placera skepp slumpmässigt på båda spelplanerna.
-        placeShips(playerBoard, playerFleet);
-        placeShips(opponentBoard, opponentFleet);
     }
 
-    private void placeShips(Board board, Fleet fleet) {
+    void placeShips(Board board, Fleet fleet) {
         Random random = new Random();
         int maxAttempts = 100; // Begränsa antalet försök för att undvika oändliga loopar
 
@@ -47,23 +36,9 @@ public class Logic {
                 boolean isValid = true;
 
                 if (orientation == 'H') {
-                    for (int i = row - 1; i <= row + 1; i++) {
-                        for (int j = col - 1; j <= col + ship.getSize(); j++) {
-                            if (i >= 0 && i < board.getRows() && j >= 0 && j < board.getCols() && board.hasShip(i, j)) {
-                                isValid = false;
-                                break;
-                            }
-                        }
-                    }
+                    isValid = isValid(board, row, col, isValid, 1, ship.getSize(), ship);
                 } else {
-                    for (int i = row - 1; i <= row + ship.getSize(); i++) {
-                        for (int j = col - 1; j <= col + 1; j++) {
-                            if (i >= 0 && i < board.getRows() && j >= 0 && j < board.getCols() && board.hasShip(i, j)) {
-                                isValid = false;
-                                break;
-                            }
-                        }
-                    }
+                    isValid = isValid(board, row, col, isValid, ship.getSize(), 1, ship);
                 }
 
                 if (isValid) {
@@ -74,38 +49,21 @@ public class Logic {
                 attempts++;
             }
         }
-
         // Skriv ut spelplanen efter att skeppen är placerade
         board.printBoard();
     }
 
-
-
-    /*private boolean isValidPlacement(Board board, int size, int row, int col, char orientation) {
-        if (orientation == 'H') {
-            if (col + size > board.getCols()) {
-                return false; // Placeringen går utanför spelplanen horisontellt
-            }
-
-            for (int i = 0; i < size; i++) {
-                if (board.hasShip(row, col + i)) {
-                    return false; // En annan båt finns redan i närheten
-                }
-            }
-        } else if (orientation == 'V') {
-            if (row + size > board.getRows()) {
-                return false; // Placeringen går utanför spelplanen vertikalt
-            }
-
-            for (int i = 0; i < size; i++) {
-                if (board.hasShip(row + i, col)) {
-                    return false; // En annan båt finns redan i närheten
+    private boolean isValid(Board board, int row, int col, boolean isValid, int i2, int size, Ship ship) {
+        for (int i = row - 1; i <= row + i2; i++) {
+            for (int j = col - 1; j <= col + size; j++) {
+                if (i >= 0 && i < board.getRows() && j >= 0 && j < board.getCols() && board.hasShip(i, j)) {
+                    isValid = false;
+                    break;
                 }
             }
         }
-
-        return true; // Placeringen är giltig
-    }*/
+        return isValid;
+    }
 
     private void placeShipOnBoard(Board board, int size, int row, int col, char orientation) {
         if (orientation == 'H') {
@@ -119,42 +77,19 @@ public class Logic {
         }
     }
 
-
-
     // Metod för att kontrollera om ett skott är en träff
     boolean isHit(Board board, int row, int col) {
-        if (board.getCell(row, col) == 'S') {
-            return true; // Träff
-        } else {
-            return false; // Miss
-        }
+        // Miss
+        return board.getCell(row, col) == 'X'; // Träff
     }
+
     // Metod för att utföra ett skott
     private void shoot(int player, int row, int col) {
-        Board targetBoard = (player == 1) ? opponentBoard : playerBoard;
 
-        if (row >= 0 && row < targetBoard.getRows() && col >= 0 && col < targetBoard.getCols()) {
-            if (!targetBoard.hasBeenFired(row, col)) {
-                targetBoard.shoot(row, col);
-
-                char result = targetBoard.getCell(row, col);
-                if (result == 'X') {
-                    if (targetBoard.isAllShipsSunk()) {
-                        System.out.println("Spelare " + player + " sänkte ett skepp!");
-                    } else {
-                        System.out.println("Spelare " + player + " träffade!");
-                    }
-                } else {
-                    System.out.println("Spelare " + player + " missade!");
-                }
-            }
-            playerBoard.printBoard();
-
-            opponentBoard.printBoard();
-        }
     }
 
     // Ny metod som kombinerar random skott och skottutförande
+    /*
     public String randomShotAndShoot(int player) {
         Random random = new Random();
         int row, col;
@@ -164,7 +99,7 @@ public class Logic {
         do {
             row = random.nextInt(opponentBoard.getRows());
             col = random.nextInt(opponentBoard.getCols());
-        } while (opponentBoard.hasBeenFired(row, col));
+        } while (opponentBoard.getCell(row, col) != '.' && opponentBoard.getCell(row, col) != 'S'); // Continue if cell is not '.' or 'S'
 
         if (isHit(opponentBoard, row, col)) {
             opponentBoard.shoot(row, col);
@@ -188,22 +123,24 @@ public class Logic {
 
         return shotResult;
     }
+     */
 
-
-
-
-
-
-    public boolean isGameFinished() {
-        return playerBoard.isAllShipsSunk() || opponentBoard.isAllShipsSunk();
+    // Helper method to check if any ships are left on a board
+    boolean areShipsLeft(Board board) {
+        for (int row = 0; row < board.getRows(); row++) {
+            for (int col = 0; col < board.getCols(); col++) {
+                if (board.getCell(row, col) == 'S') {
+                    return true; // Ships are still present
+                }
+            }
+        }
+        return false; // No ships left
     }
-
 
     public String getCurrentPlayer() {
 
         return null;
     }
-
 
     public Object getCurrentResult() {
         return null;

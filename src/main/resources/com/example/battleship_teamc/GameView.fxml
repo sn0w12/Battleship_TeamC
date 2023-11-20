@@ -13,7 +13,7 @@
                 <Image url="@../../../Images/vatten.jpg" />
             </image>
         </ImageView>
-        <GridPane fx:id="clientGrid" layoutX="37.0" layoutY="74.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: navy;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="100.0">
+        <GridPane fx:id="clientGrid" gridLinesVisible="true" layoutX="37.0" layoutY="74.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: navy;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="100.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -39,7 +39,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
         </GridPane>
-        <GridPane fx:id="serverGrid" layoutX="345.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: navy;" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="100.0">
+        <GridPane fx:id="serverGrid" gridLinesVisible="true" layoutX="345.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: navy;" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="100.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

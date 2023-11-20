@@ -77,49 +77,35 @@ public class GameController {
         gameBoard.clearBoard();
         playerFleet.resetFleet();
         gameLogic.placeShips(gameBoard, playerFleet);
-        if (!isEnemy)
-            updateGridPaneFromBoard(grid, gameBoard);
-        else
-            updateEnemyBoard(grid, gameBoard);
+        updateBoard(grid, gameBoard, isEnemy);
     }
 
-    private void updateGridPaneFromBoard(GridPane grid, Board gameBoard) {
+    private void updateBoard(GridPane grid, Board gameBoard, boolean isEnemy) {
         grid.getChildren().clear();
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 Rectangle rectangle = new Rectangle(20, 20);
                 char cell = gameBoard.getCell(row, col);
 
-                switch (cell) {
-                    case 'S' -> rectangle.setFill(Color.GRAY); // Ship
-                    case 'X' -> rectangle.setFill(Color.RED); // Hit
-                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
-                    default -> rectangle.setFill(Color.BLUE); // Water
+                if (!isEnemy) {
+                    switch (cell) {
+                        case 'S' -> rectangle.setFill(Color.GRAY); // Ship
+                        case 'X' -> rectangle.setFill(Color.RED); // Hit
+                        case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                        default -> rectangle.setFill(Color.BLUE); // Water
+                    }
+                } else {
+                    switch (cell) {
+                        case 'X' -> rectangle.setFill(Color.RED); // Hit
+                        case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                        default -> rectangle.setFill(Color.BLUE); // Water
+                    }
                 }
-
                 grid.add(rectangle, col, row);
             }
         }
     }
-
-    private void updateEnemyBoard(GridPane grid, Board gameBoard) {
-        grid.getChildren().clear();
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                Rectangle rectangle = new Rectangle(20, 20);
-                char cell = gameBoard.getCell(row, col);
-
-                switch (cell) {
-                    case 'X' -> rectangle.setFill(Color.RED); // Hit
-                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
-                    default -> rectangle.setFill(Color.BLUE); // Water
-                }
-
-                grid.add(rectangle, col, row);
-            }
-        }
-    }
-
+    
     @FXML
     private void handleMainMenuButton(Event event) throws IOException {
         Parent fxmlLoader = FXMLLoader.load(HelloApplication.class.getResource("Hello-View.fxml"));

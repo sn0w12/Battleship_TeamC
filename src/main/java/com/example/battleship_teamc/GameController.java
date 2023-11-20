@@ -1,5 +1,8 @@
 package com.example.battleship_teamc;
+
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,6 +17,8 @@ import ships.Ship;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 
 public class GameController {
     @FXML
@@ -32,9 +37,20 @@ public class GameController {
     private final Fleet clientFleet;
     private final Fleet serverFleet;
 
+    public Button startGameButton;
+
+    @FXML
+    private Slider shotDelaySlider;
+
+    @FXML
+    private Label shotDelayLabel;
+
+    private int shotDelay;
+
     public boolean isServer() {
         return isServer;
     }
+
     public void setServer(boolean server) {
         isServer = server;
     }
@@ -42,6 +58,7 @@ public class GameController {
     public GridPane getClientGrid() {
         return clientGrid;
     }
+
     public GridPane getServerGrid() {
         return serverGrid;
     }
@@ -116,7 +133,7 @@ public class GameController {
     }
 
     public void placeShipsOnMap() {
-        if (isServer){
+        if (isServer) {
             serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
             placeShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic);
             placeEnemyShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic);
@@ -126,4 +143,48 @@ public class GameController {
             placeEnemyShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic);
         }
     }
+
+    @FXML
+    public void handleStartGameButton() {
+        Thread connectionThread = new Thread(() -> {
+            if (!isServer()) {
+                Client client = new Client("localhost", 8080);
+                client.connectToServer();
+            } else {
+                Server server = new Server(8080);
+                server.start();
+            }
+        });
+        connectionThread.start();
+    }
+
+    public void initialize() {
+        Thread sliderThread = new Thread(() -> {
+            customizeShotDelay();
+        });
+        sliderThread.start();
+    }
+
+    public void customizeShotDelay() {
+        shotDelaySlider.setMin(0);
+        shotDelaySlider.setMax(5000); // 5000 ms (5 sekunder)
+        shotDelaySlider.setValue(2500); // Standardvärde, (2500 ms eller 2.5 sekunder)
+        shotDelaySlider.setShowTickMarks(true);
+
+        shotDelaySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            shotDelay = newValue.intValue();
+            double seconds = newValue.intValue() / 1000.0; // Konvertera till sekunder
+            shotDelayLabel.setText("Shot Delay: " + seconds + " s"); // Uppdatera label med fördröjningen i sekunder
+        });
+    }
+
 }
+    // Denna ska läggas in i skottmetoden. Fördröjning innan nästa skott kan avfyras baserat på shotDelay
+    /*
+    int delay = shotDelay;
+    try {
+        Thread.sleep(shotDelay); // shotDelay innehåller värdet från slidern
+    } catch (InterruptedException e) {
+        e.printStackTrace();*/
+
+

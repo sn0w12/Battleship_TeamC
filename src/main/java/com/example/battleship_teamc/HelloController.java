@@ -1,6 +1,6 @@
 package com.example.battleship_teamc;
 
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,14 +9,16 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 public class HelloController {
 
     public Button playAsServer;
     public Button playAsClient;
 
+
     @FXML
-    private void handlePlayAsClientButton(Event event) throws IOException {
+    private void handlePlayAsClientButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -28,7 +30,7 @@ public class HelloController {
     }
 
     @FXML
-    private void handlePlayAsServerButton(Event event) throws IOException {
+    private void handlePlayAsServerButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -38,4 +40,14 @@ public class HelloController {
         controller.setServer(true);
         controller.placeShipsOnMap();
     }
+
 }
+
+
+
+
+
+
+
+
+

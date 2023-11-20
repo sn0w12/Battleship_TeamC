@@ -105,7 +105,7 @@ public class GameController {
             }
         }
     }
-    
+
     @FXML
     private void handleMainMenuButton(Event event) throws IOException {
         Parent fxmlLoader = FXMLLoader.load(HelloApplication.class.getResource("Hello-View.fxml"));

@@ -1,57 +1,41 @@
 package com.example.battleship_teamc;
 
-import java.io.*;
-import java.net.*;
-import java.util.Scanner;
+import java.io.IOException;
+import java.net.Socket;
 
 public class Client {
-    public static void main(String[] args) {
-        try {
-            Socket socket = new Socket("localhost", 12345); // Anslut till servern
+    private static final int MAX_RETRY_ATTEMPTS = 100;
+    private final int port;
+    private final String serverAddress;
 
-            // Skapa en Scanner för att läsa från servern
-            Scanner serverInput = new Scanner(socket.getInputStream());
+    public Client(String serverAddress, int port) {
+        this.serverAddress = serverAddress;
+        this.port = port;
+    }
 
-            // Skapa en PrintWriter för att skicka till servern
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-            // Skapa och initiera spelplaner, flottor
-            Board playerBoard = new Board(); // Skapa en spelplan för spelaren
-            Board opponentBoard = new Board(); // Skapa en spelplan för motståndaren
-            Fleet playerFleet = new Fleet(); // Skapa en flotta för spelaren
-            Fleet opponentFleet = new Fleet(); // Skapa en flotta för motståndaren
-
-            Logic gameLogic = new Logic(playerBoard, playerFleet);
-
-            // Spellogik för klienten
-            while (gameLogic.areShipsLeft(playerBoard)) {
-                // Läs skottresultat från servern
-                if (serverInput.hasNextLine()) {
-                    String serverShotResult = serverInput.nextLine();
-                    System.out.println("Serverns skottresultat: " + serverShotResult);
+    public void connectToServer() {
+        int retryAttempts = 0;
+        while (retryAttempts < MAX_RETRY_ATTEMPTS) { // Definiera MAX_RETRY_ATTEMPTS enligt dina behov
+            try {
+                Socket socket = new Socket(serverAddress, port);
+                System.out.println("Connected to server: " + socket);
+                return; // Anslutning lyckades, avbryt loopen
+            } catch (IOException e) {
+                System.out.println("Attempt " + retryAttempts + ": Server is not available. Retrying...");
+                retryAttempts++;
+                try {
+                    Thread.sleep(1000); // Vänta en sekund innan nästa försök
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
-
-
-                // Här skulle du använda spelets logik för att hantera serverns skott och uppdatera gameLogic
-
-                // Klientens tur att skjuta
-
-                int clientPlayer = 2; // Ange klientens spelar-ID (2 i det här fallet)
-                /*
-                String clientShot = gameLogic.randomShotAndShoot(clientPlayer); // Slumpmässigt skott och utför det
-                System.out.println("Klienten skjuter: " + clientShot);
-                out.println(clientShot); // Skicka skottet till servern
-
-                 */
-
             }
-
-            System.out.println("Game is over");
-
-            // Stäng anslutningen
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        System.out.println("Failed to connect to the server after " + MAX_RETRY_ATTEMPTS + " attempts.");
     }
 }
+
+    
+            
+        
+    
+

@@ -1,55 +1,44 @@
 package com.example.battleship_teamc;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Server {
-    public static void main(String[] args) {
+    private ServerSocket serverSocket;
+    private final int port;
+
+    public Server(int port) {
+        this.port = port;
+    }
+
+    public void start() {
         try {
-            ServerSocket serverSocket = new ServerSocket(12345);
-            System.out.println("Väntar på en klientanslutning...");
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Klient ansluten.");
-
-            // Skapa en Scanner för att läsa från klienten
-            Scanner clientInput = new Scanner(clientSocket.getInputStream());
-
-            // Skapa en PrintWriter för att skicka till klienten
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-
-            // Skapa och initiera spelplaner, flottor
-            Board playerBoard = new Board(); // Skapa en spelplan för spelaren
-            Fleet playerFleet = new Fleet(); // Skapa en flotta för spelaren
-
-            Logic gameLogic = new Logic(playerBoard, playerFleet);
-
-            // Spellogik för servern
-            while (gameLogic.areShipsLeft(playerBoard)) {
-                // Serverns tur att skjuta
-                int serverPlayer = 1; // Ange serverns spelar-ID (1 i det här fallet)
-                /*
-                String serverShotResult = gameLogic.randomShotAndShoot(serverPlayer); // Slumpmässigt skott och utför det
-                out.println(serverShotResult); // Skicka skottresultatet till klienten
-                 */
-
-                // Läs svar från klienten och hantera det
-                String clientResponse = clientInput.nextLine();
-                System.out.println("Klientens svar: " + clientResponse);
-
-
-                // Här skulle du använda spelets logik för att hantera skottet och uppdatera gameLogic
-
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                System.out.println("Server socket already open.");
+                return; // Returnera om servern redan är igång
             }
 
-            System.out.println("Game is over");
+            serverSocket = new ServerSocket(port);
+            System.out.println("Server is running...");
 
-            // Stäng anslutningen
-            clientSocket.close();
-            serverSocket.close();
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected: " + clientSocket);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeServerSocket();
+        }
+    }
+
+    private void closeServerSocket() {
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+                System.out.println("Server socket closed.");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

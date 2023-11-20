@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.effect.DropShadow?>
-<AnchorPane prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship_teamc.GameController">
+<AnchorPane prefHeight="323.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship_teamc.GameController">
     <children>
-        <ImageView fitHeight="400.0" fitWidth="1000.0" layoutX="-24.0" layoutY="14.0" pickOnBounds="true">
+        <ImageView fitHeight="414.0" fitWidth="1000.0" layoutX="-24.0" pickOnBounds="true">
             <image>
                 <Image url="@../../../Images/vatten.jpg" />
             </image>
@@ -73,27 +65,39 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
         </GridPane>
-        <HBox layoutX="326.0" layoutY="44.0" prefHeight="28.0" prefWidth="349.0" spacing="50.0" AnchorPane.bottomAnchor="328.0" AnchorPane.leftAnchor="326.0" AnchorPane.rightAnchor="325.0" AnchorPane.topAnchor="44.0">
+        <HBox alignment="CENTER" layoutX="296.0" layoutY="41.0" prefHeight="34.0" prefWidth="389.0" spacing="50.0" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="296.0" AnchorPane.rightAnchor="291.0" AnchorPane.topAnchor="41.0">
             <children>
-                <Button fx:id="startGameButton" onAction="#handleStartGameButton" text="Start Game" />
-                <Button fx:id="randomizeShipsButton" mnemonicParsing="false" onAction="#placeShipsOnMap" text="Slumpa skepp" />
-                <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#handleMainMenuButton" text="Huvudmeny" />
+                <Button fx:id="startGameButton" onAction="#handleStartGameButton" text="Starta Spelet!" textFill="#090522">
+               <font>
+                  <Font name="Impact" size="14.0" />
+               </font></Button>
+                <Button fx:id="randomizeShipsButton" mnemonicParsing="false" onAction="#placeShipsOnMap" text="Slumpa skepp">
+               <font>
+                  <Font name="Impact" size="14.0" />
+               </font></Button>
+                <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#handleMainMenuButton" text="Huvudmeny">
+               <font>
+                  <Font name="Impact" size="14.0" />
+               </font></Button>
             </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
         </HBox>
-        <TextField alignment="CENTER" layoutX="792.0" layoutY="322.0" prefHeight="25.0" prefWidth="110.0" text="Spelbräda Server" />
-        <TextField alignment="CENTER" layoutX="84.0" layoutY="322.0" prefHeight="25.0" prefWidth="102.0" text="Spelbräda Klient" />
-        <HBox layoutX="350.0" layoutY="261.0" prefHeight="20.0" prefWidth="278.0">
-            <children>
-                <Slider fx:id="shotDelaySlider" prefHeight="12.0" prefWidth="283.0" />
-            </children>
-        </HBox>
-        <Label fx:id="shotDelayLabel" layoutX="438.0" layoutY="293.0" prefHeight="42.0" prefWidth="206.0" text="Shotdelay slider" textFill="#000000">
+        <TextField alignment="CENTER" layoutX="801.0" layoutY="322.0" prefHeight="26.0" prefWidth="81.0" text="SERVER" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="801.0" AnchorPane.rightAnchor="94.0">
+         <font>
+            <Font name="Impact" size="14.0" />
+         </font></TextField>
+        <TextField alignment="CENTER" layoutX="95.0" layoutY="322.0" prefHeight="26.0" prefWidth="81.0" text="KLIENT" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="800.0">
+         <font>
+            <Font name="Impact" size="14.0" />
+         </font></TextField>
+        <HBox layoutX="350.0" layoutY="261.0" prefHeight="20.0" prefWidth="278.0" />
+        <Label fx:id="shotDelayLabel" alignment="CENTER" layoutX="387.0" layoutY="271.0" prefHeight="27.0" prefWidth="206.0" text="Shotdelay slider" textFill="#15d1cd">
             <font>
-                <Font name="Arial Black" size="12.0" />
+                <Font name="Arial Black" size="14.0" />
             </font>
-            <effect>
-                <DropShadow color="WHITE" radius="2.0" spread="10000" />
-            </effect>
         </Label>
+          <Slider fx:id="shotDelaySlider" layoutX="348.0" layoutY="253.0" prefHeight="12.0" prefWidth="283.0" />
     </children>
 </AnchorPane>

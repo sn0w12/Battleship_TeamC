@@ -146,16 +146,31 @@ public class GameController {
 
     @FXML
     public void handleStartGameButton() {
-        Thread connectionThread = new Thread(() -> {
-            if (!isServer()) {
-                Client client = new Client("localhost", 8080);
-                client.connectToServer();
-            } else {
-                Server server = new Server(8080);
-                server.start();
-            }
+        // Server thread
+        Thread serverThread = new Thread(() -> {
+            Server server = new Server(8080);
+            server.start();
         });
-        connectionThread.start();
+
+        // Client thread
+        Thread clientThread = new Thread(() -> {
+            // Ensure the server has some time to start up
+            try {
+                Thread.sleep(1000); // wait for 1 second before starting the client
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Client client = new Client("localhost", 8080);
+            client.connectToServer();
+        });
+
+        // Start both threads
+        if (!isServer()) {
+            clientThread.start();
+        } else {
+            serverThread.start();
+        }
     }
 
     public void initialize() {

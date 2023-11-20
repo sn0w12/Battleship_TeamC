@@ -73,18 +73,14 @@ public class GameController {
         this.serverLogic = new Logic(serverBoard, serverFleet);
     }
 
-    public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
+    public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic, boolean isEnemy) {
         gameBoard.clearBoard();
         playerFleet.resetFleet();
         gameLogic.placeShips(gameBoard, playerFleet);
-        updateGridPaneFromBoard(grid, gameBoard);
-    }
-
-    public void placeEnemyShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
-        gameBoard.clearBoard();
-        playerFleet.resetFleet();
-        gameLogic.placeShips(gameBoard, playerFleet);
-        updateEnemyBoard(grid, gameBoard);
+        if (!isEnemy)
+            updateGridPaneFromBoard(grid, gameBoard);
+        else
+            updateEnemyBoard(grid, gameBoard);
     }
 
     private void updateGridPaneFromBoard(GridPane grid, Board gameBoard) {
@@ -135,12 +131,12 @@ public class GameController {
     public void placeShipsOnMap() {
         if (isServer) {
             serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
-            placeShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic);
-            placeEnemyShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic);
+            placeShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic, false);
+            placeShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic, true);
         } else {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
-            placeShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic);
-            placeEnemyShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic);
+            placeShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic, false);
+            placeShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic, true);
         }
     }
 

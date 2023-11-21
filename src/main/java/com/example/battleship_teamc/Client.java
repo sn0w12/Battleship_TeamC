@@ -27,8 +27,9 @@ public class Client {
     private Board tempBoard;
     private GridPane serverGrid;
     private GridPane clientGrid;
+    private int shotDelay;
 
-    public Client(String serverAddress, int port, GameController gameController, Board board, Board tempBoard, GridPane serverGrid, GridPane clientGrid) {
+    public Client(String serverAddress, int port, GameController gameController, Board board, Board tempBoard, GridPane serverGrid, GridPane clientGrid, int shotDelay) {
         this.serverAddress = serverAddress;
         this.port = port;
         this.shots = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Client {
         this.tempBoard = tempBoard;
         this.serverGrid = serverGrid;
         this.clientGrid = clientGrid;
+        this.shotDelay = shotDelay;
     }
 
     public void start() throws IOException {
@@ -49,6 +51,12 @@ public class Client {
         try (Scanner scanner = new Scanner(System.in)) {
             while(endGame) {
                 if (in.readLine().equals("TURN")) {
+                    try {
+                        Thread.sleep(shotDelay);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     System.out.println("------------------\nClient Shooting");
                     int row, col;
                     String message;

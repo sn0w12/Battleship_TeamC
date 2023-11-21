@@ -147,7 +147,7 @@ public class GameController {
 
         // Client thread
         Thread clientThread = new Thread(() -> {
-            Client client = new Client("localhost", 8080, this, userBoard, tempBoard, serverGrid, clientGrid);
+            Client client = new Client("localhost", 8080, this, userBoard, tempBoard, serverGrid, clientGrid, shotDelay);
             try {
                 client.start();
             } catch (IOException e) {

@@ -80,6 +80,12 @@ public class Server {
 
                 while ((inputLine = in.readLine()) != null) { // Read messages from client
                     if (inputLine.equals("TURN")) {
+                        try {
+                            Thread.sleep(shotDelay);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         System.out.println("------------------\nServer Shooting");
                         int row, col;
                         String message;
@@ -130,12 +136,6 @@ public class Server {
                         if(board.isAllShipsSunk()) {
                             System.out.println("Game ended");
                             closeConnection();
-                        }
-
-                        try {
-                            Thread.sleep(shotDelay);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
                     }
                 }

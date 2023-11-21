@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class HelloController {
         GameController controller = fxmlLoader.getController();
         controller.setServer(false);
         controller.placeShipsOnMap();
+        controller.showIfClientOrServer();
     }
 
     @FXML
@@ -39,15 +41,6 @@ public class HelloController {
         GameController controller = fxmlLoader.getController();
         controller.setServer(true);
         controller.placeShipsOnMap();
+        controller.showIfClientOrServer();
     }
-
 }
-
-
-
-
-
-
-
-
-

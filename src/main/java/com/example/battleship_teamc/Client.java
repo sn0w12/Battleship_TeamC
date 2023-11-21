@@ -51,64 +51,9 @@ public class Client {
         try (Scanner scanner = new Scanner(System.in)) {
             while(endGame) {
                 if (in.readLine().equals("TURN")) {
-                    try {
-                        Thread.sleep(shotDelay);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    System.out.println("------------------\nClient Shooting");
-                    int row, col;
-                    String message;
-
-                    do {
-                        row = random.nextInt(0, 10);
-                        col = random.nextInt(0, 10);
-                        message = row + ", " + col;
-                    } while (shots.contains(message)); // Keep generating new coordinates until a unique one is found
-
-                    shots.add(message); // Add the new, unique shot to the list
-                    System.out.println("Shooting at: " + message);
-
-                    out.println(message); // Send user input to server
-                    String hit = (in.readLine()); // Read response from server
-                    System.out.println(hit);
-
-                    if (hit.equals("HIT")) {
-                        tempBoard.markHit(row, col, 'X');
-                    } else
-                        tempBoard.markHit(row, col, 'O');
-
-                    Platform.runLater(() -> {
-                        gameController.updateBoard(serverGrid, tempBoard);
-                    });
-
-                    out.println("TURN");
+                    clientShoot(random);
                 } else {
-                    System.out.println("------------------\nClient Receiving");
-                    String hit = (in.readLine()); // Read response from server
-                    System.out.println(hit);
-                    String[] coords = hit.split(", ");
-
-                    if (board.hasShip(parseInt(coords[0]), parseInt(coords[1]))) {
-                        out.println("HIT"); // Send response back to client
-                        System.out.println("Server hit");
-                        board.markHit(parseInt(coords[0]), parseInt(coords[1]), 'X');
-                    } else {
-                        out.println("MISS"); // Send response back to client
-                        System.out.println("Server missed");
-                        board.markHit(parseInt(coords[0]), parseInt(coords[1]), 'O');
-                    }
-
-                    // Update the JavaFX UI
-                    Platform.runLater(() -> {
-                        gameController.updateBoard(clientGrid, board);
-                    });
-
-                    if(board.isAllShipsSunk()) {
-                        System.out.println("Game ended");
-                        endGame = false;
-                    }
+                    endGame = processServerShot();
                 }
             }
         } catch (IOException e) {
@@ -124,6 +69,87 @@ public class Client {
                 }
             }
         }
+    }
+
+    public void clientShoot(Random random) throws IOException {
+        waitForShot();
+
+        System.out.println("------------------\nClient Shooting");
+        String message = generateUniqueCoordinates(random);
+        System.out.println("Shooting at: " + message);
+
+        out.println(message);
+        processShotResponse(message);
+
+        Platform.runLater(() -> gameController.updateBoard(serverGrid, tempBoard));
+
+        out.println("TURN");
+    }
+
+    private void waitForShot() {
+        try {
+            Thread.sleep(shotDelay);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+    }
+
+    private String generateUniqueCoordinates(Random random) {
+        String message;
+        int row, col;
+        do {
+            row = random.nextInt(0, 10);
+            col = random.nextInt(0, 10);
+            message = row + ", " + col;
+        } while (shots.contains(message));
+        shots.add(message);
+        return message;
+    }
+
+    private void processShotResponse(String message) throws IOException {
+        String hit = in.readLine();
+        System.out.println(hit);
+
+        int row = Integer.parseInt(message.split(", ")[0]);
+        int col = Integer.parseInt(message.split(", ")[1]);
+        char mark = hit.equals("HIT") ? 'X' : 'O';
+        tempBoard.markHit(row, col, mark);
+    }
+
+    private boolean processServerShot() throws IOException {
+        System.out.println("------------------\nClient Receiving");
+        String shotInfo = readServerResponse();
+        int[] coords = parseCoordinates(shotInfo);
+
+        char marker = checkHitAndRespond(coords);
+        updateBoard(coords, marker);
+
+        return !board.isAllShipsSunk();
+    }
+
+    private String readServerResponse() throws IOException {
+        String hit = in.readLine();
+        System.out.println(hit);
+        return hit;
+    }
+
+    private int[] parseCoordinates(String shotInfo) {
+        String[] parts = shotInfo.split(", ");
+        return new int[]{Integer.parseInt(parts[0]), Integer.parseInt(parts[1])};
+    }
+
+    private char checkHitAndRespond(int[] coords) throws IOException {
+        boolean hit = board.hasShip(coords[0], coords[1]);
+        char marker = hit ? 'X' : 'O';
+        out.println(hit ? "HIT" : "MISS");
+        System.out.println("Server " + (hit ? "hit" : "missed"));
+        return marker;
+    }
+
+    private void updateBoard(int[] coords, char marker) {
+        board.markHit(coords[0], coords[1], marker);
+        Platform.runLater(() -> gameController.updateBoard(clientGrid, board));
     }
 
     private void closeConnection() {

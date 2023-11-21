@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.application.Platform;
 
 public class GameController {
     @FXML
@@ -33,11 +34,13 @@ public class GameController {
     @FXML
     private TextField clientTextField;
     private boolean isServer;
-
-    private final Board board;
-    private final Logic logic;
+    
+    private final Board userBoard;
+    private final Board tempBoard;
+    private final Logic userLogic;
     private static final int GRID_SIZE = 10;
-    private final Fleet fleet;
+    private final Fleet userFleet;
+
     public Button startGameButton;
 
     @FXML
@@ -47,7 +50,6 @@ public class GameController {
     private Label shotDelayLabel;
 
     private int shotDelay;
-
 
     public boolean isServer() {
         return isServer;
@@ -66,36 +68,40 @@ public class GameController {
     }
 
     public GameController() {
-        this.board = new Board(GRID_SIZE, GRID_SIZE);
-        this.fleet = new Fleet();
-        this.logic = new Logic(board, fleet);
+        this.userBoard = new Board(GRID_SIZE, GRID_SIZE);
+        this.userFleet = new Fleet();
+        this.userLogic = new Logic(userBoard, userFleet);
+
+        this.tempBoard = new Board(GRID_SIZE, GRID_SIZE);
     }
 
     public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
         gameBoard.clearBoard();
         playerFleet.resetFleet();
         gameLogic.placeShips(gameBoard, playerFleet);
-        updateGridPaneFromBoard(grid, gameBoard);
+        updateBoard(grid, gameBoard);
     }
 
-    private void updateGridPaneFromBoard(GridPane grid, Board gameBoard) {
-        grid.getChildren().clear();
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                Rectangle rectangle = new Rectangle(20, 20);
-                char cell = gameBoard.getCell(row, col);
+    private void updateBoard(GridPane grid, Board gameBoard) {
+        new Thread(() -> {
+            Platform.runLater(() -> {
+                grid.getChildren().clear();
+                for (int row = 0; row < GRID_SIZE; row++) {
+                    for (int col = 0; col < GRID_SIZE; col++) {
+                        Rectangle rectangle = new Rectangle(20, 20);
+                        char cell = gameBoard.getCell(row, col);
 
-                switch (cell) {
-                    case 'S' -> rectangle.setFill(Color.GRAY); // Ship
-                    case 'X' -> rectangle.setFill(Color.RED); // Hit
-                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
-                    default -> rectangle.setFill(Color.BLUE); // Water
-
+                        switch (cell) {
+                            case 'S' -> rectangle.setFill(Color.GRAY); // Ship
+                            case 'X' -> rectangle.setFill(Color.RED); // Hit
+                            case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                            default -> rectangle.setFill(Color.BLUE); // Water
+                        }
+                        grid.add(rectangle, col, row);
+                    }
                 }
-
-                grid.add(rectangle, col, row);
-            }
-        }
+            });
+        }).start();
     }
 
     @FXML
@@ -109,10 +115,12 @@ public class GameController {
     public void placeShipsOnMap() {
         if (isServer) {
             serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
-            placeShipsRandomly(serverGrid, board, fleet, logic);
+            placeShipsRandomly(serverGrid, userBoard, userFleet, userLogic);
+            updateBoard(clientGrid, tempBoard);
         } else {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
-            placeShipsRandomly(clientGrid, board, fleet, logic);
+            placeShipsRandomly(clientGrid, userBoard, userFleet, userLogic);
+            updateBoard(serverGrid, tempBoard);
         }
     }
 
@@ -127,16 +135,42 @@ public class GameController {
 
     @FXML
     public void handleStartGameButton() {
-        Thread connectionThread = new Thread(() -> {
-            if (!isServer()) {
-                Client client = new Client("localhost", 8080);
-                client.connectToServer();
-            } else {
-                Server server = new Server(8080);
-                server.start();
-            }
+        // Server thread
+        Thread serverThread = new Thread(() -> {
+            Server server = new Server(8080);
+            server.start();
         });
-        connectionThread.start();
+
+        // Client thread
+        Thread clientThread = new Thread(() -> {
+            Random random = new Random();
+
+            for (int i = 0; i < 10; i++) {
+                char val;
+                if (random.nextInt(10) < 5)
+                    val = 'O';
+                else
+                    val = 'X';
+
+                tempBoard.markHit(random.nextInt(10), random.nextInt(10),val);
+                updateBoard(serverGrid, tempBoard);
+                try {
+                    Thread.sleep(shotDelay);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            Client client = new Client("localhost", 8080);
+            //client.connectToServer();
+        });
+
+        // Start both threads
+        if (!isServer()) {
+            clientThread.start();
+        } else {
+            serverThread.start();
+        }
     }
 
     public void initialize() {

@@ -129,15 +129,15 @@ public class GameController {
 
         // Client thread
         Thread clientThread = new Thread(() -> {
+            Random random = new Random();
+
             for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    tempBoard.markHit(i,j,'X');
-                    updateBoard(serverGrid, tempBoard);
-                    try {
-                        Thread.sleep(shotDelay);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                tempBoard.markHit(random.nextInt(10), random.nextInt(10),'X');
+                updateBoard(serverGrid, tempBoard);
+                try {
+                    Thread.sleep(shotDelay);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
 

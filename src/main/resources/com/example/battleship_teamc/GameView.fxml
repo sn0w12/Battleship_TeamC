@@ -85,11 +85,11 @@
             <Insets />
          </opaqueInsets>
         </HBox>
-        <TextField alignment="CENTER" layoutX="801.0" layoutY="322.0" prefHeight="26.0" prefWidth="81.0" text="SERVER" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="801.0" AnchorPane.rightAnchor="94.0">
+        <TextField fx:id="serverTextField" alignment="CENTER" editable="false" layoutX="801.0" layoutY="322.0" prefHeight="26.0" prefWidth="81.0" text="SERVER" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="801.0" AnchorPane.rightAnchor="94.0">
          <font>
             <Font name="Impact" size="14.0" />
          </font></TextField>
-        <TextField alignment="CENTER" layoutX="95.0" layoutY="322.0" prefHeight="26.0" prefWidth="81.0" text="KLIENT" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="800.0">
+        <TextField fx:id="clientTextField" alignment="CENTER" editable="false" layoutX="95.0" layoutY="322.0" prefHeight="26.0" prefWidth="81.0" text="KLIENT" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="800.0">
          <font>
             <Font name="Impact" size="14.0" />
          </font></TextField>

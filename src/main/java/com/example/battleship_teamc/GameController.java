@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -28,6 +29,10 @@ public class GameController {
     private GridPane clientGrid;
     @FXML
     private GridPane serverGrid;
+    @FXML
+    private TextField serverTextField;
+    @FXML
+    private TextField clientTextField;
     private boolean isServer;
     
     private final Board userBoard;
@@ -116,6 +121,15 @@ public class GameController {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
             placeShipsRandomly(clientGrid, userBoard, userFleet, userLogic);
             updateBoard(serverGrid, tempBoard);
+        }
+    }
+
+    @FXML
+    public void showIfClientOrServer() {
+        if (isServer) {
+            serverTextField.setStyle("-fx-control-inner-background: #96ea96;");
+        } else {
+            clientTextField.setStyle("-fx-control-inner-background: #96ea96;");
         }
     }
 

@@ -82,7 +82,7 @@ public class GameController {
         updateBoard(grid, gameBoard);
     }
 
-    private void updateBoard(GridPane grid, Board gameBoard) {
+    void updateBoard(GridPane grid, Board gameBoard) {
         new Thread(() -> {
             Platform.runLater(() -> {
                 grid.getChildren().clear();
@@ -137,32 +137,23 @@ public class GameController {
     public void handleStartGameButton() {
         // Server thread
         Thread serverThread = new Thread(() -> {
-            Server server = new Server(8080);
-            server.start();
+            Server server = new Server(8080, userBoard, this, serverGrid, shotDelay);
+            try {
+                server.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         // Client thread
         Thread clientThread = new Thread(() -> {
-            Random random = new Random();
-
-            for (int i = 0; i < 10; i++) {
-                char val;
-                if (random.nextInt(10) < 5)
-                    val = 'O';
-                else
-                    val = 'X';
-
-                tempBoard.markHit(random.nextInt(10), random.nextInt(10),val);
-                updateBoard(serverGrid, tempBoard);
-                try {
-                    Thread.sleep(shotDelay);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+            Client client = new Client("localhost", 8080, userBoard);
+            try {
+                client.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            Client client = new Client("localhost", 8080);
-            //client.connectToServer();
+            // Additional client-side logic to wait for and handle the server's "Game Start" message
         });
 
         // Start both threads

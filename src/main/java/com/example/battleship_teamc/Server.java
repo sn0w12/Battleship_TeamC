@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,16 +24,22 @@ public class Server {
     private List<PrintWriter> clientWriters = new ArrayList<>();
     private final int port;
     private ExecutorService pool = Executors.newFixedThreadPool(4); // Thread pool for handling multiple clients
-    Board board;
+    private Board board;
+    private Board tempBoard;
     private GameController gameController;
     private GridPane serverGrid;
+    private GridPane clientGrid;
     private int shotDelay;
-    public Server(int port, Board board, GameController gameController, GridPane serverGrid, int shotDelay) {
+    List <String> shots;
+    public Server(int port, Board board, Board tempBoard, GameController gameController, GridPane serverGrid, GridPane clientGrid, int shotDelay) {
         this.port = port;
         this.board = board;
+        this.tempBoard = tempBoard;
         this.gameController = gameController;
         this.serverGrid = serverGrid;
+        this.clientGrid = clientGrid;
         this.shotDelay = shotDelay;
+        this.shots = new ArrayList<>();
     }
 
     public void start() throws IOException {
@@ -66,37 +73,103 @@ public class Server {
         public void run() {
             try {
                 String inputLine;
+                Random random = new Random();
+                int tries = 0;
+
+                out.println("TURN");
+
                 while ((inputLine = in.readLine()) != null) { // Read messages from client
-                    System.out.println("Received from client: " + inputLine);
-                    String[] coords = inputLine.split(", ");
-
-                    if (board.hasShip(parseInt(coords[0]), parseInt(coords[1]))) {
-                        out.println("HIT"); // Send response back to client
-                        System.out.println("Client hit");
-                        board.markHit(parseInt(coords[0]), parseInt(coords[1]), 'X');
-                    }
-                    else {
-                        out.println("MISS"); // Send response back to client
-                        System.out.println("Client missed");
-                        board.markHit(parseInt(coords[0]), parseInt(coords[1]), 'O');
-                    }
-
-                    // Update the JavaFX UI
-                    Platform.runLater(() -> {
-                        gameController.updateBoard(serverGrid, board);
-                    });
-
-                    board.printBoard();
-
-                    try {
-                        Thread.sleep(shotDelay); // shotDelay innehåller värdet från slidern
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if (inputLine.equals("TURN")) {
+                        serverShoot(random);
+                    } else {
+                        processClientShot(inputLine);
                     }
                 }
                 closeConnection();
             } catch (IOException e) {
                 System.out.println("Error in client handler: " + e.getMessage());
+            }
+        }
+
+        private void serverShoot(Random random) throws IOException {
+            waitForShot();
+
+            System.out.println("------------------\nServer Shooting");
+            String message = generateUniqueCoordinates(random);
+
+            out.println("NEXT");
+            out.println(message);
+            System.out.println("Shooting at: " + message);
+
+            processShotResponse(message);
+
+            Platform.runLater(() -> gameController.updateBoard(clientGrid, tempBoard));
+
+            out.println("TURN");
+        }
+
+        private void waitForShot() {
+            try {
+                Thread.sleep(shotDelay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }
+
+        private String generateUniqueCoordinates(Random random) {
+            String message;
+            int row, col;
+            do {
+                row = random.nextInt(0, 10);
+                col = random.nextInt(0, 10);
+                message = row + ", " + col;
+            } while (shots.contains(message));
+            shots.add(message);
+            return message;
+        }
+
+        private void processShotResponse(String message) throws IOException {
+            String hit = in.readLine();
+            int row = Integer.parseInt(message.split(", ")[0]);
+            int col = Integer.parseInt(message.split(", ")[1]);
+            char mark = hit.equals("HIT") ? 'X' : 'O';
+            tempBoard.markHit(row, col, mark);
+        }
+
+        private void processClientShot(String inputLine) {
+            System.out.println("Received from client: " + inputLine);
+
+            // Split and parse coordinates
+            String[] parts = inputLine.split(", ");
+            int x = Integer.parseInt(parts[0]);
+            int y = Integer.parseInt(parts[1]);
+
+            // Check hit or miss and update board
+            char marker = updateBoardAndCheckHit(x, y);
+
+            // Send response back to client
+            String response = (marker == 'X') ? "HIT" : "MISS";
+            out.println(response);
+            System.out.println("Client " + response.toLowerCase());
+
+            // Update the JavaFX UI
+            Platform.runLater(() -> gameController.updateBoard(serverGrid, board));
+
+            // Check if the game ended
+            if (board.isAllShipsSunk()) {
+                System.out.println("Game ended");
+                closeConnection();
+            }
+        }
+
+        private char updateBoardAndCheckHit(int x, int y) {
+            if (board.hasShip(x, y)) {
+                board.markHit(x, y, 'X');
+                return 'X';
+            } else {
+                board.markHit(x, y, 'O');
+                return 'O';
             }
         }
 

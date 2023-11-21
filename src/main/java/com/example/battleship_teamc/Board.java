@@ -104,7 +104,7 @@ public class Board {
     public boolean isAllShipsSunk() {
         for (char[] chars : grid) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (chars[j] == 'S' || chars[j] == 'X') {
+                if (chars[j] == 'S') {
                     return false; // There is still an unsunk ship
                 }
             }

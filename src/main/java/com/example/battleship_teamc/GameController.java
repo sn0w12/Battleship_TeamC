@@ -137,7 +137,7 @@ public class GameController {
     public void handleStartGameButton() {
         // Server thread
         Thread serverThread = new Thread(() -> {
-            Server server = new Server(8080, userBoard, this, serverGrid, shotDelay);
+            Server server = new Server(8080, userBoard, tempBoard, this, serverGrid, clientGrid, shotDelay);
             try {
                 server.start();
             } catch (IOException e) {
@@ -147,7 +147,7 @@ public class GameController {
 
         // Client thread
         Thread clientThread = new Thread(() -> {
-            Client client = new Client("localhost", 8080, userBoard);
+            Client client = new Client("localhost", 8080, this, userBoard, tempBoard, serverGrid, clientGrid, shotDelay);
             try {
                 client.start();
             } catch (IOException e) {

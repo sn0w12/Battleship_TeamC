@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Random;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.application.Platform;
 
 public class GameController {
     @FXML
@@ -77,21 +78,25 @@ public class GameController {
     }
 
     private void updateBoard(GridPane grid, Board gameBoard) {
-        grid.getChildren().clear();
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                Rectangle rectangle = new Rectangle(20, 20);
-                char cell = gameBoard.getCell(row, col);
+        new Thread(() -> {
+            Platform.runLater(() -> {
+                grid.getChildren().clear();
+                for (int row = 0; row < GRID_SIZE; row++) {
+                    for (int col = 0; col < GRID_SIZE; col++) {
+                        Rectangle rectangle = new Rectangle(20, 20);
+                        char cell = gameBoard.getCell(row, col);
 
-                switch (cell) {
-                    case 'S' -> rectangle.setFill(Color.GRAY); // Ship
-                    case 'X' -> rectangle.setFill(Color.RED); // Hit
-                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
-                    default -> rectangle.setFill(Color.BLUE); // Water
+                        switch (cell) {
+                            case 'S' -> rectangle.setFill(Color.GRAY); // Ship
+                            case 'X' -> rectangle.setFill(Color.RED); // Hit
+                            case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                            default -> rectangle.setFill(Color.BLUE); // Water
+                        }
+                        grid.add(rectangle, col, row);
+                    }
                 }
-                grid.add(rectangle, col, row);
-            }
-        }
+            });
+        }).start();
     }
 
     @FXML
@@ -124,15 +129,20 @@ public class GameController {
 
         // Client thread
         Thread clientThread = new Thread(() -> {
-            // Ensure the server has some time to start up
-            try {
-                Thread.sleep(1000); // wait for 1 second before starting the client
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    tempBoard.markHit(i,j,'X');
+                    updateBoard(serverGrid, tempBoard);
+                    try {
+                        Thread.sleep(shotDelay);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
 
             Client client = new Client("localhost", 8080);
-            client.connectToServer();
+            //client.connectToServer();
         });
 
         // Start both threads

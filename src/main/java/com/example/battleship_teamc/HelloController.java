@@ -19,10 +19,7 @@ public class HelloController {
 
     @FXML
     private void handlePlayAsClientButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
+        FXMLLoader fxmlLoader = loadGameView(event);
 
         GameController controller = fxmlLoader.getController();
         controller.setServer(false);
@@ -31,23 +28,20 @@ public class HelloController {
 
     @FXML
     private void handlePlayAsServerButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
+        FXMLLoader fxmlLoader = loadGameView(event);
 
         GameController controller = fxmlLoader.getController();
         controller.setServer(true);
         controller.placeShipsOnMap();
     }
 
+    private FXMLLoader loadGameView(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GameView.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load(), 975, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+
+        return fxmlLoader;
+    }
 }
-
-
-
-
-
-
-
-
-

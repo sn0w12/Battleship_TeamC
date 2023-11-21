@@ -28,11 +28,15 @@ public class GameController {
     @FXML
     private GridPane serverGrid;
     private boolean isServer;
-
-    private final Board board;
-    private final Logic logic;
+    
+    private final Board clientBoard;
+    private final Board serverBoard;
+    private final Logic clientLogic;
+    private final Logic serverLogic;
     private static final int GRID_SIZE = 10;
-    private final Fleet fleet;
+    private final Fleet clientFleet;
+    private final Fleet serverFleet;
+
     public Button startGameButton;
 
     @FXML
@@ -42,7 +46,6 @@ public class GameController {
     private Label shotDelayLabel;
 
     private int shotDelay;
-
 
     public boolean isServer() {
         return isServer;
@@ -61,33 +64,43 @@ public class GameController {
     }
 
     public GameController() {
-        this.board = new Board(GRID_SIZE, GRID_SIZE);
-        this.fleet = new Fleet();
-        this.logic = new Logic(board, fleet);
+        this.clientBoard = new Board(GRID_SIZE, GRID_SIZE);
+        this.clientFleet = new Fleet();
+        this.clientLogic = new Logic(clientBoard, clientFleet);
+
+        this.serverBoard = new Board(GRID_SIZE, GRID_SIZE);
+        this.serverFleet = new Fleet();
+        this.serverLogic = new Logic(serverBoard, serverFleet);
     }
 
-    public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
+    public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic, boolean isEnemy) {
         gameBoard.clearBoard();
         playerFleet.resetFleet();
         gameLogic.placeShips(gameBoard, playerFleet);
-        updateGridPaneFromBoard(grid, gameBoard);
+        updateBoard(grid, gameBoard, isEnemy);
     }
 
-    private void updateGridPaneFromBoard(GridPane grid, Board gameBoard) {
+    private void updateBoard(GridPane grid, Board gameBoard, boolean isEnemy) {
         grid.getChildren().clear();
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 Rectangle rectangle = new Rectangle(20, 20);
                 char cell = gameBoard.getCell(row, col);
 
-                switch (cell) {
-                    case 'S' -> rectangle.setFill(Color.GRAY); // Ship
-                    case 'X' -> rectangle.setFill(Color.RED); // Hit
-                    case 'O' -> rectangle.setFill(Color.BLACK); // Miss
-                    default -> rectangle.setFill(Color.BLUE); // Water
-
+                if (!isEnemy) {
+                    switch (cell) {
+                        case 'S' -> rectangle.setFill(Color.GRAY); // Ship
+                        case 'X' -> rectangle.setFill(Color.RED); // Hit
+                        case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                        default -> rectangle.setFill(Color.BLUE); // Water
+                    }
+                } else {
+                    switch (cell) {
+                        case 'X' -> rectangle.setFill(Color.RED); // Hit
+                        case 'O' -> rectangle.setFill(Color.BLACK); // Miss
+                        default -> rectangle.setFill(Color.BLUE); // Water
+                    }
                 }
-
                 grid.add(rectangle, col, row);
             }
         }
@@ -104,25 +117,42 @@ public class GameController {
     public void placeShipsOnMap() {
         if (isServer) {
             serverGrid.getChildren().remove(1, serverGrid.getChildren().size());
-            placeShipsRandomly(serverGrid, board, fleet, logic);
+            placeShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic, false);
+            placeShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic, true);
         } else {
             clientGrid.getChildren().remove(1, clientGrid.getChildren().size());
-            placeShipsRandomly(clientGrid, board, fleet, logic);
+            placeShipsRandomly(clientGrid, clientBoard, clientFleet, clientLogic, false);
+            placeShipsRandomly(serverGrid, serverBoard, serverFleet, serverLogic, true);
         }
     }
 
     @FXML
     public void handleStartGameButton() {
-        Thread connectionThread = new Thread(() -> {
-            if (!isServer()) {
-                Client client = new Client("localhost", 8080);
-                client.connectToServer();
-            } else {
-                Server server = new Server(8080);
-                server.start();
-            }
+        // Server thread
+        Thread serverThread = new Thread(() -> {
+            Server server = new Server(8080);
+            server.start();
         });
-        connectionThread.start();
+
+        // Client thread
+        Thread clientThread = new Thread(() -> {
+            // Ensure the server has some time to start up
+            try {
+                Thread.sleep(1000); // wait for 1 second before starting the client
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Client client = new Client("localhost", 8080);
+            client.connectToServer();
+        });
+
+        // Start both threads
+        if (!isServer()) {
+            clientThread.start();
+        } else {
+            serverThread.start();
+        }
     }
 
     public void initialize() {

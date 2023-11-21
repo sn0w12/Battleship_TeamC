@@ -132,7 +132,13 @@ public class GameController {
             Random random = new Random();
 
             for (int i = 0; i < 10; i++) {
-                tempBoard.markHit(random.nextInt(10), random.nextInt(10),'X');
+                char val;
+                if (random.nextInt(10) < 5)
+                    val = 'O';
+                else
+                    val = 'X';
+
+                tempBoard.markHit(random.nextInt(10), random.nextInt(10),val);
                 updateBoard(serverGrid, tempBoard);
                 try {
                     Thread.sleep(shotDelay);

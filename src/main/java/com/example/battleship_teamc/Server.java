@@ -158,8 +158,10 @@ public class Server {
 
             // Check if the game ended
             if (board.isAllShipsSunk()) {
-                System.out.println("Game ended");
+                gameController.setWinner("Client"); // or "Client" depending on your game logic
+                System.out.println("Game ended. Winner: " + gameController.getWinner());
                 closeConnection();
+                Platform.runLater(() -> gameController.getWinnerLabel().setText("Winner: " + gameController.getWinner()));
             }
         }
 

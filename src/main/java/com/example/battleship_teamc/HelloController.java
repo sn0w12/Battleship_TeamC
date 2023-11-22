@@ -1,5 +1,4 @@
 package com.example.battleship_teamc;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +16,9 @@ public class HelloController {
     public Button playAsServer;
     public Button playAsClient;
 
-
     @FXML
     private void handlePlayAsClientButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = loadGameView(event);
-
         GameController controller = fxmlLoader.getController();
         controller.setServer(false);
         controller.placeShipsOnMap();
@@ -31,7 +28,6 @@ public class HelloController {
     @FXML
     private void handlePlayAsServerButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = loadGameView(event);
-
         GameController controller = fxmlLoader.getController();
         controller.setServer(true);
         controller.placeShipsOnMap();
@@ -44,7 +40,6 @@ public class HelloController {
         Scene scene = new Scene(fxmlLoader.load(), 975, 400);
         stage.setScene(scene);
         stage.setResizable(false);
-
         return fxmlLoader;
     }
 }

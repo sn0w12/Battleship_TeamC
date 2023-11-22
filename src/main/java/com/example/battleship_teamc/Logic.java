@@ -1,5 +1,4 @@
 package com.example.battleship_teamc;
-
 import ships.*;
 import java.util.Random;
 
@@ -11,15 +10,16 @@ public class Logic {
         this.playerBoard = playerBoard;
     }
 
-    void placeShips(Board board, Fleet fleet) {
+    public boolean placeShips(Board board, Fleet fleet) {
         Random random = new Random();
         int maxAttempts = 100; // Begränsa antalet försök för att undvika oändliga loopar
+        boolean allShipsPlacedSuccessfully = true; //Lagt till en kontroll så att alla skepp placeras annars försöker den igen - Johanna
 
         // För varje skepp i flottan
         for (Ship ship : fleet.getPlayerFleet()) {
             char orientation = random.nextBoolean() ? 'H' : 'V'; // Slumpmässig orientering
-
             int attempts = 0;
+
             while (attempts < maxAttempts) {
                 int row, col;
 
@@ -48,9 +48,13 @@ public class Logic {
                 }
                 attempts++;
             }
+            if (attempts == maxAttempts) {
+                allShipsPlacedSuccessfully = false;
+            }
         }
         // Skriv ut spelplanen efter att skeppen är placerade
         board.printBoard();
+        return allShipsPlacedSuccessfully;
     }
 
     private boolean isValid(Board board, int row, int col, boolean isValid, int i2, int size, Ship ship) {

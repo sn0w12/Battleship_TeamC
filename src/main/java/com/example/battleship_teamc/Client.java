@@ -1,8 +1,6 @@
 package com.example.battleship_teamc;
-
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
 import static java.lang.Integer.parseInt;
 
 public class Client {
@@ -124,8 +121,14 @@ public class Client {
 
         char marker = checkHitAndRespond(coords);
         updateBoard(coords, marker);
-
+        if (board.isAllShipsSunk()) {
+            gameController.setWinner("Server"); // or "Client" depending on your game logic
+            System.out.println("Game ended. Winner: " + gameController.getWinner());
+            closeConnection();
+            Platform.runLater(() -> gameController.getWinnerLabel().setText("Winner: " + gameController.getWinner()));
+        }
         return !board.isAllShipsSunk();
+
     }
 
     private String readServerResponse() throws IOException {

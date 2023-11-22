@@ -1,6 +1,4 @@
-
 package com.example.battleship_teamc;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -48,7 +46,6 @@ public class Board {
             }
             System.out.println();  // Newline at the end of each row
         }
-
         // Print a separator line
         System.out.println("----------------------------");
     }

@@ -7,9 +7,6 @@ public abstract class Ship {
     private boolean isPlaced; // Lägg till en flagga för att markera om skeppet är placerat
     private int type;
 
-    public Ship() {
-    }
-
     public Ship(String name, int size, boolean isDestroyed, int type) {
         this.name = name;
         this.size = size;
@@ -21,36 +18,21 @@ public abstract class Ship {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public int getSize() {
         return size;
     }
-
     public void setSize(int size) {
         this.size = size;
     }
-
     public int getType() {
         return type;
     }
-
-    public boolean isDestroyed() {
-        return isDestroyed;
-    }
-
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
     }
-
-    // Metod för att kontrollera om skeppet är placerat
-    public boolean isPlaced() {
-        return isPlaced;
-    }
-
     public void setPlaced(boolean placed) {
         isPlaced = placed;
     }

@@ -1,11 +1,10 @@
 package com.example.battleship_teamc;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-    private final char[][] grid; // Använd char för att representera spelplanen
-    private final ArrayList<String> firedShots;
+    private char[][] grid; // Använd char för att representera spelplanen
+    private ArrayList<String> firedShots;
 
     public Board(int rows, int cols) {
         grid = new char[rows][cols];
@@ -59,6 +58,10 @@ public class Board {
         return grid[0].length;
     }
 
+    public char[][] getGrid() {
+        return grid;
+    }
+
     public void placeShip(int row, int col) {
         grid[row][col] = 'S'; // Använd '*' för att representera en del av ett skepp
     }
@@ -86,7 +89,6 @@ public class Board {
         }
         return true; // All ships have been sunk
     }
-
     public void clearBoard() {
         for (int i = 0; i < grid.length; i++) {
             Arrays.fill(grid[i], '.');

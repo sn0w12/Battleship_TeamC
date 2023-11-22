@@ -2,7 +2,6 @@ package com.example.battleship_teamc;
 
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -77,16 +76,12 @@ public class Client {
 
     public void clientShoot(Random random) throws IOException {
         waitForShot();
-
         System.out.println("------------------\nClient Shooting");
         String message = generateUniqueCoordinates(random);
         System.out.println("Shooting at: " + message);
-
         out.println(message);
         processShotResponse(message);
-
         Platform.runLater(() -> gameController.updateBoard(serverGrid, tempBoard));
-
         out.println("TURN");
     }
 

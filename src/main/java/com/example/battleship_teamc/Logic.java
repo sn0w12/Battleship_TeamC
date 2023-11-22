@@ -1,10 +1,10 @@
 package com.example.battleship_teamc;
 
 import ships.Ship;
-
 import java.util.Random;
 
 public class Logic {
+
     private final Board playerBoard;
 
     public Logic(Board playerBoard, Fleet playerFleet) {

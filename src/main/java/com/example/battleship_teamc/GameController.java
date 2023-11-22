@@ -15,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class GameController {
@@ -55,23 +54,15 @@ public class GameController {
     public boolean isServer() {
         return isServer;
     }
-
     public void setServer(boolean server) {
         isServer = server;
     }
-
     public Label getWinnerLabel() {
         return winnerLabel;
     }
-
-    public void setWinnerLabel(Label winnerLabel) {
-        this.winnerLabel = winnerLabel;
-    }
-
     public String getWinner() {
         return winner;
     }
-
     public void setWinner(String winner) {
         this.winner = winner;
     }
@@ -188,5 +179,4 @@ public class GameController {
             shotDelayLabel.setText("Shot Delay: " + seconds + " s"); // Uppdatera label med fördröjningen i sekunder
         });
     }
-
 }

@@ -36,6 +36,9 @@ public class GameController {
     private Slider shotDelaySlider;
     @FXML
     private Label shotDelayLabel;
+    @FXML
+    private Label winnerLabel;
+    private String winner;
     private boolean isServer;
     private final Board userBoard;
     private final Board tempBoard;
@@ -46,11 +49,17 @@ public class GameController {
     private int shotDelay;
 
     public boolean isServer() {
-        return isServer;
-    }
+        return isServer;}
     public void setServer(boolean server) {
-        isServer = server;
-    }
+        isServer = server;}
+    public Label getWinnerLabel() {
+        return winnerLabel;}
+    public void setWinnerLabel(Label winnerLabel) {
+        this.winnerLabel = winnerLabel;}
+    public String getWinner() {
+        return winner;}
+    public void setWinner(String winner) {
+        this.winner = winner;}
 
     public GameController() {
         this.userBoard = new Board(GRID_SIZE, GRID_SIZE);
@@ -156,6 +165,7 @@ public class GameController {
             customizeShotDelay();
         });
         sliderThread.start();
+        Platform.runLater(() -> winnerLabel.setText(""));
     }
 
     public void customizeShotDelay() {

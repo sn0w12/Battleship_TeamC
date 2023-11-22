@@ -121,8 +121,14 @@ public class Client {
 
         char marker = checkHitAndRespond(coords);
         updateBoard(coords, marker);
-
+        if (board.isAllShipsSunk()) {
+            gameController.setWinner("Server"); // or "Client" depending on your game logic
+            System.out.println("Game ended. Winner: " + gameController.getWinner());
+            closeConnection();
+            Platform.runLater(() -> gameController.getWinnerLabel().setText("Winner: " + gameController.getWinner()));
+        }
         return !board.isAllShipsSunk();
+
     }
 
     private String readServerResponse() throws IOException {

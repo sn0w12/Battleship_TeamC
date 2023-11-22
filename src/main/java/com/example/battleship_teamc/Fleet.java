@@ -1,4 +1,5 @@
 package com.example.battleship_teamc;
+
 import ships.*;
 
 import java.util.ArrayList;
@@ -6,12 +7,12 @@ import java.util.List;
 
 public class Fleet {
 
-    private List<Ship> playerFleet;
+    private final List<Ship> playerFleet;
 
     public Fleet() {
         this.playerFleet = new ArrayList<Ship>();
 
-        AircraftCarrier aircraftCarrier = new AircraftCarrier("AircraftCarrier", 5,false, 5);
+        AircraftCarrier aircraftCarrier = new AircraftCarrier("AircraftCarrier", 5, false, 5);
 
         Battleship battleship1 = new Battleship("Battleship1", 4, false, 4);
         Battleship battleship2 = new Battleship("Battleship2", 4, false, 4);
@@ -25,19 +26,19 @@ public class Fleet {
         Submarine submarine3 = new Submarine("Submarine3", 2, false, 2);
         Submarine submarine4 = new Submarine("Submarine4", 2, false, 2);
 
-       this.playerFleet.add(aircraftCarrier);
+        this.playerFleet.add(aircraftCarrier);
 
-       this.playerFleet.add(battleship1);
-       this.playerFleet.add(battleship2);
+        this.playerFleet.add(battleship1);
+        this.playerFleet.add(battleship2);
 
-       this.playerFleet.add(cruiser1);
-       this.playerFleet.add(cruiser2);
-       this.playerFleet.add(cruiser3);
+        this.playerFleet.add(cruiser1);
+        this.playerFleet.add(cruiser2);
+        this.playerFleet.add(cruiser3);
 
-       this.playerFleet.add(submarine1);
-       this.playerFleet.add(submarine2);
-       this.playerFleet.add(submarine3);
-       this.playerFleet.add(submarine4);
+        this.playerFleet.add(submarine1);
+        this.playerFleet.add(submarine2);
+        this.playerFleet.add(submarine3);
+        this.playerFleet.add(submarine4);
     }
 
     public List<Ship> getPlayerFleet() {

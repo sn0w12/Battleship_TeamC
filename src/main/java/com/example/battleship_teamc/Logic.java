@@ -1,12 +1,14 @@
 package com.example.battleship_teamc;
-import ships.*;
+
+import ships.Ship;
+
 import java.util.Random;
 
 public class Logic {
     private final Board playerBoard;
 
     public Logic(Board playerBoard, Fleet playerFleet) {
-        // Konstruktorn för Logic-klassen tar in två spelplaner (för spelare och motståndare) samt två flottor (för spelare och motståndare).
+        // Konstruktorn för Logic-klassen tar in en spelplan samt två flotte.
         this.playerBoard = playerBoard;
     }
 
@@ -79,74 +81,5 @@ public class Logic {
                 board.placeShip(row + i, col);
             }
         }
-    }
-
-    // Metod för att kontrollera om ett skott är en träff
-    boolean isHit(Board board, int row, int col) {
-        // Miss
-        return board.getCell(row, col) == 'X'; // Träff
-    }
-
-    // Metod för att utföra ett skott
-    private void shoot(int player, int row, int col) {
-
-    }
-
-    // Ny metod som kombinerar random skott och skottutförande
-    /*
-    public String randomShotAndShoot(int player) {
-        Random random = new Random();
-        int row, col;
-
-        String shotResult; // Declare the variable here
-
-        do {
-            row = random.nextInt(opponentBoard.getRows());
-            col = random.nextInt(opponentBoard.getCols());
-        } while (opponentBoard.getCell(row, col) != '.' && opponentBoard.getCell(row, col) != 'S'); // Continue if cell is not '.' or 'S'
-
-        if (isHit(opponentBoard, row, col)) {
-            opponentBoard.shoot(row, col);
-            shotResult = Protocol.HIT;
-
-            if (opponentBoard.isAllShipsSunk()) {
-                shotResult = Protocol.SUNK;
-                System.out.println("Sänkt! Spelare " + player + " sänkte motståndarens skepp på cell " + row + col);
-            } else {
-                System.out.println("Träff! Spelare " + player + " träffade motståndaren på cell " + row + col);
-            }
-        } else {
-            opponentBoard.shoot(row, col);
-            shotResult = Protocol.MISS;
-            System.out.println("Miss! Spelare " + player + " missade motståndaren på cell " + row + col);
-        }
-
-        // Skriv ut spelplanerna efter skottet
-        playerBoard.printBoard();
-        opponentBoard.printBoard();
-
-        return shotResult;
-    }
-     */
-
-    // Helper method to check if any ships are left on a board
-    boolean areShipsLeft(Board board) {
-        for (int row = 0; row < board.getRows(); row++) {
-            for (int col = 0; col < board.getCols(); col++) {
-                if (board.getCell(row, col) == 'S') {
-                    return true; // Ships are still present
-                }
-            }
-        }
-        return false; // No ships left
-    }
-
-    public String getCurrentPlayer() {
-
-        return null;
-    }
-
-    public Object getCurrentResult() {
-        return null;
     }
 }

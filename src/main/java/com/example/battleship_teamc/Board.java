@@ -1,10 +1,11 @@
 package com.example.battleship_teamc;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-    private char[][] grid; // Använd char för att representera spelplanen
-    private ArrayList<String> firedShots;
+    private final char[][] grid; // Använd char för att representera spelplanen
+    private final ArrayList<String> firedShots;
 
     public Board(int rows, int cols) {
         grid = new char[rows][cols];
@@ -58,31 +59,12 @@ public class Board {
         return grid[0].length;
     }
 
-    public char[][] getGrid() {
-        return grid;
-    }
-
-    private boolean isValidPosition(int row, int col) {
-        return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
-    }
-
     public void placeShip(int row, int col) {
         grid[row][col] = 'S'; // Använd '*' för att representera en del av ett skepp
     }
 
     public boolean hasShip(int newRow, int newCol) {
         return grid[newRow][newCol] == 'S';
-    }
-
-    // Lagt till bool om det var hit eller miss -Briana
-    public boolean shoot(int row, int col) {
-        if (grid[row][col] == 'S') {
-            grid[row][col] = 'X'; // 'X' representerar träff på ett skepp
-            return true;
-        } else {
-            grid[row][col] = 'O'; // 'O' representerar miss
-            return false;
-        }
     }
 
     public char getCell(int row, int col) {
@@ -92,10 +74,6 @@ public class Board {
     //marks a hit cell with X - Briana
     public void markHit(int row, int col, char newVal) {
         grid[row][col] = newVal;
-    }
-
-    public boolean hasBeenFired(int row, int col) {
-        return false;
     }
 
     public boolean isAllShipsSunk() {
@@ -108,6 +86,7 @@ public class Board {
         }
         return true; // All ships have been sunk
     }
+
     public void clearBoard() {
         for (int i = 0; i < grid.length; i++) {
             Arrays.fill(grid[i], '.');

@@ -1,27 +1,30 @@
 package com.example.battleship_teamc;
-import javafx.event.ActionEvent;
+
+import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import ships.Ship;
+
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.application.Platform;
 
 public class GameController {
+    private static final int GRID_SIZE = 10;
+    private final Board userBoard;
+    private final Board tempBoard;
+    private final Logic userLogic;
+    private final Fleet userFleet;
+    public Button startGameButton;
     @FXML
     Button mainMenuButton;
     @FXML
@@ -40,32 +43,37 @@ public class GameController {
     private Label winnerLabel;
     private String winner;
     private boolean isServer;
-    private final Board userBoard;
-    private final Board tempBoard;
-    private final Logic userLogic;
-    private static final int GRID_SIZE = 10;
-    private final Fleet userFleet;
-    public Button startGameButton;
     private int shotDelay;
-
-    public boolean isServer() {
-        return isServer;}
-    public void setServer(boolean server) {
-        isServer = server;}
-    public Label getWinnerLabel() {
-        return winnerLabel;}
-    public void setWinnerLabel(Label winnerLabel) {
-        this.winnerLabel = winnerLabel;}
-    public String getWinner() {
-        return winner;}
-    public void setWinner(String winner) {
-        this.winner = winner;}
 
     public GameController() {
         this.userBoard = new Board(GRID_SIZE, GRID_SIZE);
         this.userFleet = new Fleet();
         this.userLogic = new Logic(userBoard, userFleet);
         this.tempBoard = new Board(GRID_SIZE, GRID_SIZE);
+    }
+
+    public boolean isServer() {
+        return isServer;
+    }
+
+    public void setServer(boolean server) {
+        isServer = server;
+    }
+
+    public Label getWinnerLabel() {
+        return winnerLabel;
+    }
+
+    public void setWinnerLabel(Label winnerLabel) {
+        this.winnerLabel = winnerLabel;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 
     public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
@@ -76,7 +84,7 @@ public class GameController {
             playerFleet.resetFleet();
             placementSuccess = gameLogic.placeShips(gameBoard, playerFleet);
         } while (!placementSuccess);
-            updateBoard(grid, gameBoard);
+        updateBoard(grid, gameBoard);
     }
 
     void updateBoard(GridPane grid, Board gameBoard) {

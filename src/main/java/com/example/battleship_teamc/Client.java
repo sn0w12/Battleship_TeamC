@@ -1,6 +1,8 @@
 package com.example.battleship_teamc;
+
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import static java.lang.Integer.parseInt;
 
 public class Client {
     private final int port;
@@ -18,13 +19,13 @@ public class Client {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
-    private List <String> shots;
-    private GameController gameController;
-    private Board board;
-    private Board tempBoard;
-    private GridPane serverGrid;
-    private GridPane clientGrid;
-    private int shotDelay;
+    private final List<String> shots;
+    private final GameController gameController;
+    private final Board board;
+    private final Board tempBoard;
+    private final GridPane serverGrid;
+    private final GridPane clientGrid;
+    private final int shotDelay;
 
     public Client(String serverAddress, int port, GameController gameController, Board board, Board tempBoard, GridPane serverGrid, GridPane clientGrid, int shotDelay) {
         this.serverAddress = serverAddress;
@@ -43,19 +44,19 @@ public class Client {
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         Random random = new Random();
-        boolean endGame = true;
+        boolean continueGame = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
-            while(endGame) {
+            while (continueGame) {
                 String serverResponse = in.readLine();
                 if (serverResponse == null) {
                     System.out.println("Server disconnected or encountered an issue.");
-                    endGame = false;
+                    continueGame = false;
                 } else {
                     if (serverResponse.equals("TURN")) {
                         clientShoot(random);
                     } else {
-                        endGame = processServerShot();
+                        continueGame = processServerShot();
                     }
                 }
             }

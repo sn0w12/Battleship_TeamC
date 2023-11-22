@@ -1,8 +1,6 @@
 package com.example.battleship_teamc;
-
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,20 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import static java.lang.Integer.parseInt;
 
 public class Client {
     private final int port;
     private final String serverAddress;
-    private final List<String> shots;
-    private final GameController gameController;
-    private final Board board;
-    private final Board tempBoard;
-    private final GridPane serverGrid;
-    private final GridPane clientGrid;
-    private final int shotDelay;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+    private List <String> shots;
+    private GameController gameController;
+    private Board board;
+    private Board tempBoard;
+    private GridPane serverGrid;
+    private GridPane clientGrid;
+    private int shotDelay;
 
     public Client(String serverAddress, int port, GameController gameController, Board board, Board tempBoard, GridPane serverGrid, GridPane clientGrid, int shotDelay) {
         this.serverAddress = serverAddress;
@@ -47,11 +46,17 @@ public class Client {
         boolean endGame = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
-            while (endGame) {
-                if (in.readLine().equals("TURN")) {
-                    clientShoot(random);
+            while(endGame) {
+                String serverResponse = in.readLine();
+                if (serverResponse == null) {
+                    System.out.println("Server disconnected or encountered an issue.");
+                    endGame = false;
                 } else {
-                    endGame = processServerShot();
+                    if (serverResponse.equals("TURN")) {
+                        clientShoot(random);
+                    } else {
+                        endGame = processServerShot();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -123,13 +128,12 @@ public class Client {
         char marker = checkHitAndRespond(coords);
         updateBoard(coords, marker);
         if (board.isAllShipsSunk()) {
-            gameController.setWinner("Server"); // or "Client" depending on your game logic
+            gameController.setWinner("Server");
             System.out.println("Game ended. Winner: " + gameController.getWinner());
             closeConnection();
             Platform.runLater(() -> gameController.getWinnerLabel().setText("Winner: " + gameController.getWinner()));
         }
         return !board.isAllShipsSunk();
-
     }
 
     private String readServerResponse() throws IOException {
@@ -158,9 +162,9 @@ public class Client {
 
     private void closeConnection() {
         try {
+            socket.close();
             in.close();
             out.close();
-            socket.close();
         } catch (IOException e) {
             System.out.println("Error closing connection: " + e.getMessage());
         }

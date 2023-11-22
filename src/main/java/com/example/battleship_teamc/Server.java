@@ -158,7 +158,11 @@ public class Server {
 
             // Check if the game ended
             if (board.isAllShipsSunk()) {
-                gameController.setWinner("Client"); // or "Client" depending on your game logic
+                if (board.isAllShipsSunk()) {
+                    gameController.setWinner("Client");
+                } else {
+                    gameController.setWinner("Server");
+                }
                 System.out.println("Game ended. Winner: " + gameController.getWinner());
                 closeConnection();
                 Platform.runLater(() -> gameController.getWinnerLabel().setText("Winner: " + gameController.getWinner()));
@@ -177,9 +181,9 @@ public class Server {
 
         private void closeConnection() {
             try {
+                clientSocket.close();
                 in.close();
                 out.close();
-                clientSocket.close();
             } catch (IOException e) {
                 System.out.println("Error closing connection: " + e.getMessage());
             }

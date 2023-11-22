@@ -47,10 +47,16 @@ public class Client {
 
         try (Scanner scanner = new Scanner(System.in)) {
             while(endGame) {
-                if (in.readLine().equals("TURN")) {
-                    clientShoot(random);
+                String serverResponse = in.readLine();
+                if (serverResponse == null) {
+                    System.out.println("Server disconnected or encountered an issue.");
+                    endGame = false;
                 } else {
-                    endGame = processServerShot();
+                    if (serverResponse.equals("TURN")) {
+                        clientShoot(random);
+                    } else {
+                        endGame = processServerShot();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -122,13 +128,12 @@ public class Client {
         char marker = checkHitAndRespond(coords);
         updateBoard(coords, marker);
         if (board.isAllShipsSunk()) {
-            gameController.setWinner("Server"); // or "Client" depending on your game logic
+            gameController.setWinner("Server");
             System.out.println("Game ended. Winner: " + gameController.getWinner());
             closeConnection();
             Platform.runLater(() -> gameController.getWinnerLabel().setText("Winner: " + gameController.getWinner()));
         }
         return !board.isAllShipsSunk();
-
     }
 
     private String readServerResponse() throws IOException {
@@ -157,9 +162,9 @@ public class Client {
 
     private void closeConnection() {
         try {
+            socket.close();
             in.close();
             out.close();
-            socket.close();
         } catch (IOException e) {
             System.out.println("Error closing connection: " + e.getMessage());
         }

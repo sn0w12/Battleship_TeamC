@@ -1,4 +1,3 @@
-
 package com.example.battleship_teamc;
 
 import javafx.application.Platform;
@@ -16,21 +15,20 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.Integer.parseInt;
-
 public class Server {
-    private ServerSocket serverSocket;
-    private List<Socket> clientSockets = new ArrayList<>();
-    private List<PrintWriter> clientWriters = new ArrayList<>();
+    private final List<Socket> clientSockets = new ArrayList<>();
+    private final List<PrintWriter> clientWriters = new ArrayList<>();
     private final int port;
-    private ExecutorService pool = Executors.newFixedThreadPool(4); // Thread pool for handling multiple clients
-    private Board board;
-    private Board tempBoard;
-    private GameController gameController;
-    private GridPane serverGrid;
-    private GridPane clientGrid;
-    private int shotDelay;
-    List <String> shots;
+    private final ExecutorService pool = Executors.newFixedThreadPool(4); // Thread pool for handling multiple clients
+    private final Board board;
+    private final Board tempBoard;
+    private final GameController gameController;
+    private final GridPane serverGrid;
+    private final GridPane clientGrid;
+    private final int shotDelay;
+    List<String> shots;
+    private ServerSocket serverSocket;
+
     public Server(int port, Board board, Board tempBoard, GameController gameController, GridPane serverGrid, GridPane clientGrid, int shotDelay) {
         this.port = port;
         this.board = board;
@@ -56,7 +54,7 @@ public class Server {
     }
 
     private class ClientHandler implements Runnable {
-        private Socket clientSocket;
+        private final Socket clientSocket;
         private BufferedReader in;
         private PrintWriter out;
 

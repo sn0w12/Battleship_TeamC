@@ -1,6 +1,8 @@
 package com.example.battleship_teamc;
+
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,21 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import static java.lang.Integer.parseInt;
 
 public class Client {
     private final int port;
     private final String serverAddress;
+    private final List<String> shots;
+    private final GameController gameController;
+    private final Board board;
+    private final Board tempBoard;
+    private final GridPane serverGrid;
+    private final GridPane clientGrid;
+    private final int shotDelay;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
-    private List <String> shots;
-    private GameController gameController;
-    private Board board;
-    private Board tempBoard;
-    private GridPane serverGrid;
-    private GridPane clientGrid;
-    private int shotDelay;
 
     public Client(String serverAddress, int port, GameController gameController, Board board, Board tempBoard, GridPane serverGrid, GridPane clientGrid, int shotDelay) {
         this.serverAddress = serverAddress;
@@ -46,7 +47,7 @@ public class Client {
         boolean endGame = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
-            while(endGame) {
+            while (endGame) {
                 if (in.readLine().equals("TURN")) {
                     clientShoot(random);
                 } else {

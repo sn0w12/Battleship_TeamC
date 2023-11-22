@@ -1,5 +1,4 @@
 package com.example.battleship_teamc;
-
 import ships.*;
 
 import java.util.ArrayList;
@@ -39,19 +38,10 @@ public class Fleet {
        this.playerFleet.add(submarine2);
        this.playerFleet.add(submarine3);
        this.playerFleet.add(submarine4);
-
-    }
-
-    public Fleet(List<Ship> playerFleet) {
-        this.playerFleet = playerFleet;
     }
 
     public List<Ship> getPlayerFleet() {
         return playerFleet;
-    }
-
-    public void setPlayerFleet(List<Ship> playerFleet) {
-        this.playerFleet = playerFleet;
     }
 
     public void resetFleet() {

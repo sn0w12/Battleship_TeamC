@@ -1,8 +1,6 @@
 package com.example.battleship_teamc;
-
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
 import static java.lang.Integer.parseInt;
 
 public class Client {

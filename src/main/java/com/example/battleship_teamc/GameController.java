@@ -1,5 +1,4 @@
 package com.example.battleship_teamc;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -33,53 +32,42 @@ public class GameController {
     private TextField serverTextField;
     @FXML
     private TextField clientTextField;
+    @FXML
+    private Slider shotDelaySlider;
+    @FXML
+    private Label shotDelayLabel;
     private boolean isServer;
-    
     private final Board userBoard;
     private final Board tempBoard;
     private final Logic userLogic;
     private static final int GRID_SIZE = 10;
     private final Fleet userFleet;
-
     public Button startGameButton;
-
-    @FXML
-    private Slider shotDelaySlider;
-
-    @FXML
-    private Label shotDelayLabel;
-
     private int shotDelay;
 
     public boolean isServer() {
         return isServer;
     }
-
     public void setServer(boolean server) {
         isServer = server;
-    }
-
-    public GridPane getClientGrid() {
-        return clientGrid;
-    }
-
-    public GridPane getServerGrid() {
-        return serverGrid;
     }
 
     public GameController() {
         this.userBoard = new Board(GRID_SIZE, GRID_SIZE);
         this.userFleet = new Fleet();
         this.userLogic = new Logic(userBoard, userFleet);
-
         this.tempBoard = new Board(GRID_SIZE, GRID_SIZE);
     }
 
     public void placeShipsRandomly(GridPane grid, Board gameBoard, Fleet playerFleet, Logic gameLogic) {
-        gameBoard.clearBoard();
-        playerFleet.resetFleet();
-        gameLogic.placeShips(gameBoard, playerFleet);
-        updateBoard(grid, gameBoard);
+        boolean placementSuccess; //Lagt till en kontroll så att alla skepp placeras annars försöker den igen - Johanna
+
+        do {
+            gameBoard.clearBoard();
+            playerFleet.resetFleet();
+            placementSuccess = gameLogic.placeShips(gameBoard, playerFleet);
+        } while (!placementSuccess);
+            updateBoard(grid, gameBoard);
     }
 
     void updateBoard(GridPane grid, Board gameBoard) {
@@ -155,7 +143,6 @@ public class GameController {
             }
             // Additional client-side logic to wait for and handle the server's "Game Start" message
         });
-
         // Start both threads
         if (!isServer()) {
             clientThread.start();
@@ -185,12 +172,3 @@ public class GameController {
     }
 
 }
-    // Denna ska läggas in i skottmetoden. Fördröjning innan nästa skott kan avfyras baserat på shotDelay
-    /*
-    int delay = shotDelay;
-    try {
-        Thread.sleep(shotDelay); // shotDelay innehåller värdet från slidern
-    } catch (InterruptedException e) {
-        e.printStackTrace();*/
-
-

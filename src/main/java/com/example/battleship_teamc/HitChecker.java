@@ -1,5 +1,4 @@
 package com.example.battleship_teamc;
-
 import java.util.List;
 import java.util.Random;
 
@@ -7,27 +6,10 @@ import java.util.Random;
 public class HitChecker {
 
     private Board board;
-
-    public ShotLog getShotLog() {
-        return shotLog;
-    }
-
-    public void setShotLog(ShotLog shotLog) {
-        this.shotLog = shotLog;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     private ShotLog shotLog;
-
     private int score;
 
+    public int getScore() {return score;}
 
     // Method to send  first shot.
     public Coordinate firstShot(){
@@ -67,40 +49,9 @@ public class HitChecker {
         } else {
             System.out.println("no hit at " + newShot.toString());
             System.out.println("score is now: " + this.getScore());
-
         }
         return "";
     }
-
-
-
-  /*  public String checkHit(int row, int col) {
-        String status = " ";
-            for (int i = 0; i < this.shotLog.getFiredShots().size(); i++) {
-                if (row == this.shotLog.getFiredShots().get(i).getRow()
-                        && col == this.shotLog.getFiredShots().get(i).getCol()) {
-                    System.out.println("Shot already in list, Try again!");
-                    status = "fail";
-                } else {
-                    System.out.println("Coordinate unique");
-                    if (this.board.shoot(row, col)) {
-                        System.out.println("Ship was hit at " + row + "," + col);
-                        shotLog.logShot(row, col);
-                        shotLog.logHit(row, col);
-                        status = "hit";
-                    } else {
-                        System.out.println("Not hit at " + row + "," + col);
-                        shotLog.logShot(row, col);
-                        shotLog.logMisses(row, col);
-                        status = "miss";
-                    }
-                }
-
-
-        }
-
-        return status;
-    }*/
 
     public HitChecker() {
         this.shotLog = new ShotLog();
@@ -111,27 +62,16 @@ public class HitChecker {
     public HitChecker(Board board) {
         this.board = board;
         this.shotLog = new ShotLog();
+        this.score = 30;
         /* At every hit this will decrease by one.
         All ships represented by 30 coordinates.
          */
-
-        this.score = 30;
     }
 
-    // Creates and returns a random coordinate.
-      /* public Coordinate rng(){
-        int row = (int)(Math.random() * 10);
-        int col = (int)(Math.random() * 10);
-        // Typecast a double to int.
-
-        return new Coordinate(row, col);
-
-    }*/
     public Coordinate rng (){
         Random rand = new Random();
         int row= rand.nextInt(10);
         int col= rand.nextInt(10);
         return new Coordinate(row, col);
     }
-
 }
